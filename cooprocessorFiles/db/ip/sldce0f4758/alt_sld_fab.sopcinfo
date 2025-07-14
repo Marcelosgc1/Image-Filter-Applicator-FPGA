@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <EnsembleReport name="alt_sld_fab" kind="alt_sld_fab" version="1.0" fabric="QSYS">
  <!-- Format version 23.1 993 (Future versions may contain additional information.) -->
- <!-- 2025.07.05.01:27:46 -->
+ <!-- 2025.07.14.03:42:02 -->
  <!-- A collection of modules and connections -->
  <parameter name="AUTO_DEVICE_FAMILY">
   <type>java.lang.String</type>
@@ -56,7 +56,7 @@
 the requested settings for a module instance. -->
   <parameter name="DESIGN_HASH">
    <type>java.lang.String</type>
-   <value>b8c58390a80b1160f114</value>
+   <value>ab1c0e3c8ab1d885f38d</value>
    <derived>false</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -64,7 +64,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="NODE_COUNT">
    <type>int</type>
-   <value>6</value>
+   <value>5</value>
    <derived>false</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -80,7 +80,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="SETTINGS">
    <type>java.lang.String</type>
-   <value>{fabric sld dir agent mfr_code 110 type_code 132 version 1 instance 0 ir_width 3 psig 9b67919e} {fabric sld dir agent mfr_code 110 type_code 132 version 1 instance 1 ir_width 3 psig 9b67919e} {fabric sld dir agent mfr_code 110 type_code 128 version 1 instance 0 ir_width 1 psig 9b67919e} {fabric sld dir agent mfr_code 110 type_code 3 version 2 instance 0 ir_width 8 psig 9b67919e} {fabric sld dir agent mfr_code 110 type_code 3 version 2 instance 1 ir_width 8 psig 9b67919e} {fabric sld dir agent mfr_code 110 type_code 9 version 0 instance 0 ir_width 4 psig 9b67919e} </value>
+   <value>{fabric sld dir agent mfr_code 110 type_code 132 version 1 instance 0 ir_width 3 psig 9b67919e} {fabric sld dir agent mfr_code 110 type_code 132 version 1 instance 1 ir_width 3 psig 9b67919e} {fabric sld dir agent mfr_code 110 type_code 128 version 1 instance 0 ir_width 1 psig 9b67919e} {fabric sld dir agent mfr_code 110 type_code 3 version 2 instance 0 ir_width 8 psig 9b67919e} {fabric sld dir agent mfr_code 110 type_code 9 version 0 instance 0 ir_width 4 psig 9b67919e} </value>
    <derived>false</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -88,7 +88,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="CLOCKS">
    <type>java.lang.String</type>
-   <value>{id {} } {id {} } {id {} } {id {} } {id {} } {id {} } </value>
+   <value>{id {} } {id {} } {id {} } {id {} } {id {} } </value>
    <derived>false</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -104,7 +104,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="EP_INFOS">
    <type>java.lang.String</type>
-   <value>{hpath {soc_system:u0|soc_system_fpga_only_master:fpga_only_master|altera_avalon_st_jtag_interface:jtag_phy_embedded_in_jtag_master|altera_jtag_sld_node:node|sld_virtual_jtag_basic:sld_virtual_jtag_component|sld_virtual_jtag_impl:sld_virtual_jtag_impl_inst} } {hpath {soc_system:u0|soc_system_fpga_only_master:hps_only_master|altera_avalon_st_jtag_interface:jtag_phy_embedded_in_jtag_master|altera_jtag_sld_node:node|sld_virtual_jtag_basic:sld_virtual_jtag_component|sld_virtual_jtag_impl:sld_virtual_jtag_impl_inst} } {hpath {soc_system:u0|soc_system_jtag_uart:jtag_uart|alt_jtag_atlantic:soc_system_jtag_uart_alt_jtag_atlantic} } {hpath {top:comb_34|memory_mod:comb_38|ram16bits:comb_3|altsyncram:altsyncram_component|altsyncram_bnn1:auto_generated|sld_mod_ram_rom:mgl_prim2} } {hpath {top:comb_34|vgaMemory:comb_1620|altsyncram:altsyncram_component|altsyncram_ion1:auto_generated|sld_mod_ram_rom:mgl_prim2} } {hpath {hps_reset:hps_reset_inst|altsource_probe:altsource_probe_component} } </value>
+   <value>{hpath {soc_system:u0|soc_system_fpga_only_master:fpga_only_master|altera_avalon_st_jtag_interface:jtag_phy_embedded_in_jtag_master|altera_jtag_sld_node:node|sld_virtual_jtag_basic:sld_virtual_jtag_component|sld_virtual_jtag_impl:sld_virtual_jtag_impl_inst} } {hpath {soc_system:u0|soc_system_fpga_only_master:hps_only_master|altera_avalon_st_jtag_interface:jtag_phy_embedded_in_jtag_master|altera_jtag_sld_node:node|sld_virtual_jtag_basic:sld_virtual_jtag_component|sld_virtual_jtag_impl:sld_virtual_jtag_impl_inst} } {hpath {soc_system:u0|soc_system_jtag_uart:jtag_uart|alt_jtag_atlantic:soc_system_jtag_uart_alt_jtag_atlantic} } {hpath {top:comb_34|vgaMemory:comb_1513|altsyncram:altsyncram_component|altsyncram_ion1:auto_generated|sld_mod_ram_rom:mgl_prim2} } {hpath {hps_reset:hps_reset_inst|altsource_probe:altsource_probe_component} } </value>
    <derived>false</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -128,7 +128,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="COMPOSED_SETTINGS">
    <type>java.lang.String</type>
-   <value>{fabric sld dir agent mfr_code 110 type_code 132 version 1 instance 0 ir_width 3 bridge_agent 0 prefer_host {} } {fabric sld dir agent mfr_code 110 type_code 132 version 1 instance 1 ir_width 3 bridge_agent 0 prefer_host {} } {fabric sld dir agent mfr_code 110 type_code 128 version 1 instance 0 ir_width 1 bridge_agent 0 prefer_host {} } {fabric sld dir agent mfr_code 110 type_code 3 version 2 instance 0 ir_width 8 bridge_agent 0 prefer_host {} } {fabric sld dir agent mfr_code 110 type_code 3 version 2 instance 1 ir_width 8 bridge_agent 0 prefer_host {} } {fabric sld dir agent mfr_code 110 type_code 9 version 0 instance 0 ir_width 4 bridge_agent 0 prefer_host {} } </value>
+   <value>{fabric sld dir agent mfr_code 110 type_code 132 version 1 instance 0 ir_width 3 bridge_agent 0 prefer_host {} } {fabric sld dir agent mfr_code 110 type_code 132 version 1 instance 1 ir_width 3 bridge_agent 0 prefer_host {} } {fabric sld dir agent mfr_code 110 type_code 128 version 1 instance 0 ir_width 1 bridge_agent 0 prefer_host {} } {fabric sld dir agent mfr_code 110 type_code 3 version 2 instance 0 ir_width 8 bridge_agent 0 prefer_host {} } {fabric sld dir agent mfr_code 110 type_code 9 version 0 instance 0 ir_width 4 bridge_agent 0 prefer_host {} } </value>
    <derived>true</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -218,13 +218,13 @@ parameters are a RESULT of the module parameters. -->
    <port>
     <name>nodes_send</name>
     <direction>Input</direction>
-    <width>186</width>
+    <width>155</width>
     <role>send</role>
    </port>
    <port>
     <name>nodes_receive</name>
     <direction>Output</direction>
-    <width>186</width>
+    <width>155</width>
     <role>receive</role>
    </port>
   </interface>
@@ -321,7 +321,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="SEND_WIDTHS">
    <type>java.lang.String</type>
-   <value>5 5 3 10 10 6</value>
+   <value>5 5 3 10 6</value>
    <derived>false</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -329,7 +329,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="RECEIVE_WIDTHS">
    <type>java.lang.String</type>
-   <value>26 26 24 31 31 27</value>
+   <value>26 26 24 31 27</value>
    <derived>false</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -392,13 +392,13 @@ parameters are a RESULT of the module parameters. -->
    <port>
     <name>send</name>
     <direction>Input</direction>
-    <width>186</width>
+    <width>155</width>
     <role>send</role>
    </port>
    <port>
     <name>receive</name>
     <direction>Output</direction>
-    <width>186</width>
+    <width>155</width>
     <role>receive</role>
    </port>
   </interface>
@@ -491,26 +491,14 @@ parameters are a RESULT of the module parameters. -->
    <port>
     <name>send_4</name>
     <direction>Output</direction>
-    <width>10</width>
+    <width>6</width>
     <role>send_4</role>
    </port>
    <port>
     <name>receive_4</name>
     <direction>Input</direction>
-    <width>31</width>
-    <role>receive_4</role>
-   </port>
-   <port>
-    <name>send_5</name>
-    <direction>Output</direction>
-    <width>6</width>
-    <role>send_5</role>
-   </port>
-   <port>
-    <name>receive_5</name>
-    <direction>Input</direction>
     <width>27</width>
-    <role>receive_5</role>
+    <role>receive_4</role>
    </port>
   </interface>
  </module>
@@ -545,13 +533,9 @@ the requested settings for a module instance. -->
    <name>debug.virtualInterface.link_4</name>
    <value>debug.endpointLink {fabric sld index 5} </value>
   </assignment>
-  <assignment>
-   <name>debug.virtualInterface.link_5</name>
-   <value>debug.endpointLink {fabric sld index 6} </value>
-  </assignment>
   <parameter name="FRAGMENTS">
    <type>java.lang.String</type>
-   <value>{{name clock type clock dir end ports { {tck clk in 1 0} } } {name node type conduit dir end ports { {tms tms in 1 1} {tdi tdi in 1 2} {tdo tdo out 1 0} {ena ena in 1 3} {usr1 usr1 in 1 4} {clr clr in 1 5} {clrn clrn in 1 6} {jtag_state_tlr jtag_state_tlr in 1 7} {jtag_state_rti jtag_state_rti in 1 8} {jtag_state_sdrs jtag_state_sdrs in 1 9} {jtag_state_cdr jtag_state_cdr in 1 10} {jtag_state_sdr jtag_state_sdr in 1 11} {jtag_state_e1dr jtag_state_e1dr in 1 12} {jtag_state_pdr jtag_state_pdr in 1 13} {jtag_state_e2dr jtag_state_e2dr in 1 14} {jtag_state_udr jtag_state_udr in 1 15} {jtag_state_sirs jtag_state_sirs in 1 16} {jtag_state_cir jtag_state_cir in 1 17} {jtag_state_sir jtag_state_sir in 1 18} {jtag_state_e1ir jtag_state_e1ir in 1 19} {jtag_state_pir jtag_state_pir in 1 20} {jtag_state_e2ir jtag_state_e2ir in 1 21} {jtag_state_uir jtag_state_uir in 1 22} {ir_in ir_in in 3 23} {irq irq out 1 1} {ir_out ir_out out 3 2} } clock clock assign {debug.controlledBy {link_0} } moduleassign {debug.virtualInterface.link_0 {debug.endpointLink {fabric sld index 1} } } } } {{name clock type clock dir end ports { {tck clk in 1 0} } } {name node type conduit dir end ports { {tms tms in 1 1} {tdi tdi in 1 2} {tdo tdo out 1 0} {ena ena in 1 3} {usr1 usr1 in 1 4} {clr clr in 1 5} {clrn clrn in 1 6} {jtag_state_tlr jtag_state_tlr in 1 7} {jtag_state_rti jtag_state_rti in 1 8} {jtag_state_sdrs jtag_state_sdrs in 1 9} {jtag_state_cdr jtag_state_cdr in 1 10} {jtag_state_sdr jtag_state_sdr in 1 11} {jtag_state_e1dr jtag_state_e1dr in 1 12} {jtag_state_pdr jtag_state_pdr in 1 13} {jtag_state_e2dr jtag_state_e2dr in 1 14} {jtag_state_udr jtag_state_udr in 1 15} {jtag_state_sirs jtag_state_sirs in 1 16} {jtag_state_cir jtag_state_cir in 1 17} {jtag_state_sir jtag_state_sir in 1 18} {jtag_state_e1ir jtag_state_e1ir in 1 19} {jtag_state_pir jtag_state_pir in 1 20} {jtag_state_e2ir jtag_state_e2ir in 1 21} {jtag_state_uir jtag_state_uir in 1 22} {ir_in ir_in in 3 23} {irq irq out 1 1} {ir_out ir_out out 3 2} } clock clock assign {debug.controlledBy {link_1} } moduleassign {debug.virtualInterface.link_1 {debug.endpointLink {fabric sld index 2} } } } } {{name clock type clock dir end ports { {tck clk in 1 0} } } {name node type conduit dir end ports { {tms tms in 1 1} {tdi tdi in 1 2} {tdo tdo out 1 0} {ena ena in 1 3} {usr1 usr1 in 1 4} {clr clr in 1 5} {clrn clrn in 1 6} {jtag_state_tlr jtag_state_tlr in 1 7} {jtag_state_rti jtag_state_rti in 1 8} {jtag_state_sdrs jtag_state_sdrs in 1 9} {jtag_state_cdr jtag_state_cdr in 1 10} {jtag_state_sdr jtag_state_sdr in 1 11} {jtag_state_e1dr jtag_state_e1dr in 1 12} {jtag_state_pdr jtag_state_pdr in 1 13} {jtag_state_e2dr jtag_state_e2dr in 1 14} {jtag_state_udr jtag_state_udr in 1 15} {jtag_state_sirs jtag_state_sirs in 1 16} {jtag_state_cir jtag_state_cir in 1 17} {jtag_state_sir jtag_state_sir in 1 18} {jtag_state_e1ir jtag_state_e1ir in 1 19} {jtag_state_pir jtag_state_pir in 1 20} {jtag_state_e2ir jtag_state_e2ir in 1 21} {jtag_state_uir jtag_state_uir in 1 22} {ir_in ir_in in 1 23} {irq irq out 1 1} {ir_out ir_out out 1 2} } clock clock assign {debug.controlledBy {link_2} } moduleassign {debug.virtualInterface.link_2 {debug.endpointLink {fabric sld index 3} } } } } {{name clock type clock dir end ports { {tck clk in 1 0} } } {name node type conduit dir end ports { {tms tms in 1 1} {tdi tdi in 1 2} {tdo tdo out 1 0} {ena ena in 1 3} {usr1 usr1 in 1 4} {clr clr in 1 5} {clrn clrn in 1 6} {jtag_state_tlr jtag_state_tlr in 1 7} {jtag_state_rti jtag_state_rti in 1 8} {jtag_state_sdrs jtag_state_sdrs in 1 9} {jtag_state_cdr jtag_state_cdr in 1 10} {jtag_state_sdr jtag_state_sdr in 1 11} {jtag_state_e1dr jtag_state_e1dr in 1 12} {jtag_state_pdr jtag_state_pdr in 1 13} {jtag_state_e2dr jtag_state_e2dr in 1 14} {jtag_state_udr jtag_state_udr in 1 15} {jtag_state_sirs jtag_state_sirs in 1 16} {jtag_state_cir jtag_state_cir in 1 17} {jtag_state_sir jtag_state_sir in 1 18} {jtag_state_e1ir jtag_state_e1ir in 1 19} {jtag_state_pir jtag_state_pir in 1 20} {jtag_state_e2ir jtag_state_e2ir in 1 21} {jtag_state_uir jtag_state_uir in 1 22} {ir_in ir_in in 8 23} {irq irq out 1 1} {ir_out ir_out out 8 2} } clock clock assign {debug.controlledBy {link_3} } moduleassign {debug.virtualInterface.link_3 {debug.endpointLink {fabric sld index 4} } } } } {{name clock type clock dir end ports { {tck clk in 1 0} } } {name node type conduit dir end ports { {tms tms in 1 1} {tdi tdi in 1 2} {tdo tdo out 1 0} {ena ena in 1 3} {usr1 usr1 in 1 4} {clr clr in 1 5} {clrn clrn in 1 6} {jtag_state_tlr jtag_state_tlr in 1 7} {jtag_state_rti jtag_state_rti in 1 8} {jtag_state_sdrs jtag_state_sdrs in 1 9} {jtag_state_cdr jtag_state_cdr in 1 10} {jtag_state_sdr jtag_state_sdr in 1 11} {jtag_state_e1dr jtag_state_e1dr in 1 12} {jtag_state_pdr jtag_state_pdr in 1 13} {jtag_state_e2dr jtag_state_e2dr in 1 14} {jtag_state_udr jtag_state_udr in 1 15} {jtag_state_sirs jtag_state_sirs in 1 16} {jtag_state_cir jtag_state_cir in 1 17} {jtag_state_sir jtag_state_sir in 1 18} {jtag_state_e1ir jtag_state_e1ir in 1 19} {jtag_state_pir jtag_state_pir in 1 20} {jtag_state_e2ir jtag_state_e2ir in 1 21} {jtag_state_uir jtag_state_uir in 1 22} {ir_in ir_in in 8 23} {irq irq out 1 1} {ir_out ir_out out 8 2} } clock clock assign {debug.controlledBy {link_4} } moduleassign {debug.virtualInterface.link_4 {debug.endpointLink {fabric sld index 5} } } } } {{name clock type clock dir end ports { {tck clk in 1 0} } } {name node type conduit dir end ports { {tms tms in 1 1} {tdi tdi in 1 2} {tdo tdo out 1 0} {ena ena in 1 3} {usr1 usr1 in 1 4} {clr clr in 1 5} {clrn clrn in 1 6} {jtag_state_tlr jtag_state_tlr in 1 7} {jtag_state_rti jtag_state_rti in 1 8} {jtag_state_sdrs jtag_state_sdrs in 1 9} {jtag_state_cdr jtag_state_cdr in 1 10} {jtag_state_sdr jtag_state_sdr in 1 11} {jtag_state_e1dr jtag_state_e1dr in 1 12} {jtag_state_pdr jtag_state_pdr in 1 13} {jtag_state_e2dr jtag_state_e2dr in 1 14} {jtag_state_udr jtag_state_udr in 1 15} {jtag_state_sirs jtag_state_sirs in 1 16} {jtag_state_cir jtag_state_cir in 1 17} {jtag_state_sir jtag_state_sir in 1 18} {jtag_state_e1ir jtag_state_e1ir in 1 19} {jtag_state_pir jtag_state_pir in 1 20} {jtag_state_e2ir jtag_state_e2ir in 1 21} {jtag_state_uir jtag_state_uir in 1 22} {ir_in ir_in in 4 23} {irq irq out 1 1} {ir_out ir_out out 4 2} } clock clock assign {debug.controlledBy {link_5} } moduleassign {debug.virtualInterface.link_5 {debug.endpointLink {fabric sld index 6} } } } } </value>
+   <value>{{name clock type clock dir end ports { {tck clk in 1 0} } } {name node type conduit dir end ports { {tms tms in 1 1} {tdi tdi in 1 2} {tdo tdo out 1 0} {ena ena in 1 3} {usr1 usr1 in 1 4} {clr clr in 1 5} {clrn clrn in 1 6} {jtag_state_tlr jtag_state_tlr in 1 7} {jtag_state_rti jtag_state_rti in 1 8} {jtag_state_sdrs jtag_state_sdrs in 1 9} {jtag_state_cdr jtag_state_cdr in 1 10} {jtag_state_sdr jtag_state_sdr in 1 11} {jtag_state_e1dr jtag_state_e1dr in 1 12} {jtag_state_pdr jtag_state_pdr in 1 13} {jtag_state_e2dr jtag_state_e2dr in 1 14} {jtag_state_udr jtag_state_udr in 1 15} {jtag_state_sirs jtag_state_sirs in 1 16} {jtag_state_cir jtag_state_cir in 1 17} {jtag_state_sir jtag_state_sir in 1 18} {jtag_state_e1ir jtag_state_e1ir in 1 19} {jtag_state_pir jtag_state_pir in 1 20} {jtag_state_e2ir jtag_state_e2ir in 1 21} {jtag_state_uir jtag_state_uir in 1 22} {ir_in ir_in in 3 23} {irq irq out 1 1} {ir_out ir_out out 3 2} } clock clock assign {debug.controlledBy {link_0} } moduleassign {debug.virtualInterface.link_0 {debug.endpointLink {fabric sld index 1} } } } } {{name clock type clock dir end ports { {tck clk in 1 0} } } {name node type conduit dir end ports { {tms tms in 1 1} {tdi tdi in 1 2} {tdo tdo out 1 0} {ena ena in 1 3} {usr1 usr1 in 1 4} {clr clr in 1 5} {clrn clrn in 1 6} {jtag_state_tlr jtag_state_tlr in 1 7} {jtag_state_rti jtag_state_rti in 1 8} {jtag_state_sdrs jtag_state_sdrs in 1 9} {jtag_state_cdr jtag_state_cdr in 1 10} {jtag_state_sdr jtag_state_sdr in 1 11} {jtag_state_e1dr jtag_state_e1dr in 1 12} {jtag_state_pdr jtag_state_pdr in 1 13} {jtag_state_e2dr jtag_state_e2dr in 1 14} {jtag_state_udr jtag_state_udr in 1 15} {jtag_state_sirs jtag_state_sirs in 1 16} {jtag_state_cir jtag_state_cir in 1 17} {jtag_state_sir jtag_state_sir in 1 18} {jtag_state_e1ir jtag_state_e1ir in 1 19} {jtag_state_pir jtag_state_pir in 1 20} {jtag_state_e2ir jtag_state_e2ir in 1 21} {jtag_state_uir jtag_state_uir in 1 22} {ir_in ir_in in 3 23} {irq irq out 1 1} {ir_out ir_out out 3 2} } clock clock assign {debug.controlledBy {link_1} } moduleassign {debug.virtualInterface.link_1 {debug.endpointLink {fabric sld index 2} } } } } {{name clock type clock dir end ports { {tck clk in 1 0} } } {name node type conduit dir end ports { {tms tms in 1 1} {tdi tdi in 1 2} {tdo tdo out 1 0} {ena ena in 1 3} {usr1 usr1 in 1 4} {clr clr in 1 5} {clrn clrn in 1 6} {jtag_state_tlr jtag_state_tlr in 1 7} {jtag_state_rti jtag_state_rti in 1 8} {jtag_state_sdrs jtag_state_sdrs in 1 9} {jtag_state_cdr jtag_state_cdr in 1 10} {jtag_state_sdr jtag_state_sdr in 1 11} {jtag_state_e1dr jtag_state_e1dr in 1 12} {jtag_state_pdr jtag_state_pdr in 1 13} {jtag_state_e2dr jtag_state_e2dr in 1 14} {jtag_state_udr jtag_state_udr in 1 15} {jtag_state_sirs jtag_state_sirs in 1 16} {jtag_state_cir jtag_state_cir in 1 17} {jtag_state_sir jtag_state_sir in 1 18} {jtag_state_e1ir jtag_state_e1ir in 1 19} {jtag_state_pir jtag_state_pir in 1 20} {jtag_state_e2ir jtag_state_e2ir in 1 21} {jtag_state_uir jtag_state_uir in 1 22} {ir_in ir_in in 1 23} {irq irq out 1 1} {ir_out ir_out out 1 2} } clock clock assign {debug.controlledBy {link_2} } moduleassign {debug.virtualInterface.link_2 {debug.endpointLink {fabric sld index 3} } } } } {{name clock type clock dir end ports { {tck clk in 1 0} } } {name node type conduit dir end ports { {tms tms in 1 1} {tdi tdi in 1 2} {tdo tdo out 1 0} {ena ena in 1 3} {usr1 usr1 in 1 4} {clr clr in 1 5} {clrn clrn in 1 6} {jtag_state_tlr jtag_state_tlr in 1 7} {jtag_state_rti jtag_state_rti in 1 8} {jtag_state_sdrs jtag_state_sdrs in 1 9} {jtag_state_cdr jtag_state_cdr in 1 10} {jtag_state_sdr jtag_state_sdr in 1 11} {jtag_state_e1dr jtag_state_e1dr in 1 12} {jtag_state_pdr jtag_state_pdr in 1 13} {jtag_state_e2dr jtag_state_e2dr in 1 14} {jtag_state_udr jtag_state_udr in 1 15} {jtag_state_sirs jtag_state_sirs in 1 16} {jtag_state_cir jtag_state_cir in 1 17} {jtag_state_sir jtag_state_sir in 1 18} {jtag_state_e1ir jtag_state_e1ir in 1 19} {jtag_state_pir jtag_state_pir in 1 20} {jtag_state_e2ir jtag_state_e2ir in 1 21} {jtag_state_uir jtag_state_uir in 1 22} {ir_in ir_in in 8 23} {irq irq out 1 1} {ir_out ir_out out 8 2} } clock clock assign {debug.controlledBy {link_3} } moduleassign {debug.virtualInterface.link_3 {debug.endpointLink {fabric sld index 4} } } } } {{name clock type clock dir end ports { {tck clk in 1 0} } } {name node type conduit dir end ports { {tms tms in 1 1} {tdi tdi in 1 2} {tdo tdo out 1 0} {ena ena in 1 3} {usr1 usr1 in 1 4} {clr clr in 1 5} {clrn clrn in 1 6} {jtag_state_tlr jtag_state_tlr in 1 7} {jtag_state_rti jtag_state_rti in 1 8} {jtag_state_sdrs jtag_state_sdrs in 1 9} {jtag_state_cdr jtag_state_cdr in 1 10} {jtag_state_sdr jtag_state_sdr in 1 11} {jtag_state_e1dr jtag_state_e1dr in 1 12} {jtag_state_pdr jtag_state_pdr in 1 13} {jtag_state_e2dr jtag_state_e2dr in 1 14} {jtag_state_udr jtag_state_udr in 1 15} {jtag_state_sirs jtag_state_sirs in 1 16} {jtag_state_cir jtag_state_cir in 1 17} {jtag_state_sir jtag_state_sir in 1 18} {jtag_state_e1ir jtag_state_e1ir in 1 19} {jtag_state_pir jtag_state_pir in 1 20} {jtag_state_e2ir jtag_state_e2ir in 1 21} {jtag_state_uir jtag_state_uir in 1 22} {ir_in ir_in in 4 23} {irq irq out 1 1} {ir_out ir_out out 4 2} } clock clock assign {debug.controlledBy {link_4} } moduleassign {debug.virtualInterface.link_4 {debug.endpointLink {fabric sld index 5} } } } } </value>
    <derived>false</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -678,26 +662,14 @@ parameters are a RESULT of the module parameters. -->
    <port>
     <name>send_4</name>
     <direction>Input</direction>
-    <width>10</width>
+    <width>6</width>
     <role>send_4</role>
    </port>
    <port>
     <name>receive_4</name>
     <direction>Output</direction>
-    <width>31</width>
-    <role>receive_4</role>
-   </port>
-   <port>
-    <name>send_5</name>
-    <direction>Input</direction>
-    <width>6</width>
-    <role>send_5</role>
-   </port>
-   <port>
-    <name>receive_5</name>
-    <direction>Output</direction>
     <width>27</width>
-    <role>receive_5</role>
+    <role>receive_4</role>
    </port>
   </interface>
   <interface name="clock_0" kind="clock_sink" version="23.1">
@@ -1904,7 +1876,7 @@ parameters are a RESULT of the module parameters. -->
    <port>
     <name>ir_in_4</name>
     <direction>Input</direction>
-    <width>8</width>
+    <width>4</width>
     <role>ir_in</role>
    </port>
    <port>
@@ -1915,250 +1887,6 @@ parameters are a RESULT of the module parameters. -->
    </port>
    <port>
     <name>ir_out_4</name>
-    <direction>Output</direction>
-    <width>8</width>
-    <role>ir_out</role>
-   </port>
-  </interface>
-  <interface name="clock_5" kind="clock_sink" version="23.1">
-   <!-- The connection points exposed by a module instance for the
-particular module parameters. Connection points and their
-parameters are a RESULT of the module parameters. -->
-   <parameter name="externallyDriven">
-    <type>boolean</type>
-    <value>false</value>
-    <derived>false</derived>
-    <enabled>true</enabled>
-    <visible>false</visible>
-    <valid>true</valid>
-   </parameter>
-   <parameter name="ptfSchematicName">
-    <type>java.lang.String</type>
-    <value></value>
-    <derived>false</derived>
-    <enabled>true</enabled>
-    <visible>false</visible>
-    <valid>true</valid>
-   </parameter>
-   <parameter name="deviceFamily">
-    <type>java.lang.String</type>
-    <value>UNKNOWN</value>
-    <derived>false</derived>
-    <enabled>true</enabled>
-    <visible>true</visible>
-    <valid>true</valid>
-   </parameter>
-   <parameter name="generateLegacySim">
-    <type>boolean</type>
-    <value>false</value>
-    <derived>false</derived>
-    <enabled>true</enabled>
-    <visible>true</visible>
-    <valid>true</valid>
-   </parameter>
-   <type>clock</type>
-   <isStart>false</isStart>
-   <port>
-    <name>tck_5</name>
-    <direction>Input</direction>
-    <width>1</width>
-    <role>clk</role>
-   </port>
-  </interface>
-  <interface name="node_5" kind="conduit_end" version="23.1">
-   <!-- The connection points exposed by a module instance for the
-particular module parameters. Connection points and their
-parameters are a RESULT of the module parameters. -->
-   <assignment>
-    <name>debug.controlledBy</name>
-    <value>link_5</value>
-   </assignment>
-   <parameter name="associatedClock">
-    <type>java.lang.String</type>
-    <value>clock_5</value>
-    <derived>false</derived>
-    <enabled>true</enabled>
-    <visible>true</visible>
-    <valid>true</valid>
-   </parameter>
-   <parameter name="associatedReset">
-    <type>java.lang.String</type>
-    <value></value>
-    <derived>false</derived>
-    <enabled>true</enabled>
-    <visible>true</visible>
-    <valid>true</valid>
-   </parameter>
-   <parameter name="deviceFamily">
-    <type>java.lang.String</type>
-    <value>UNKNOWN</value>
-    <derived>false</derived>
-    <enabled>true</enabled>
-    <visible>true</visible>
-    <valid>true</valid>
-   </parameter>
-   <parameter name="generateLegacySim">
-    <type>boolean</type>
-    <value>false</value>
-    <derived>false</derived>
-    <enabled>true</enabled>
-    <visible>true</visible>
-    <valid>true</valid>
-   </parameter>
-   <type>conduit</type>
-   <isStart>false</isStart>
-   <port>
-    <name>tms_5</name>
-    <direction>Input</direction>
-    <width>1</width>
-    <role>tms</role>
-   </port>
-   <port>
-    <name>tdi_5</name>
-    <direction>Input</direction>
-    <width>1</width>
-    <role>tdi</role>
-   </port>
-   <port>
-    <name>tdo_5</name>
-    <direction>Output</direction>
-    <width>1</width>
-    <role>tdo</role>
-   </port>
-   <port>
-    <name>ena_5</name>
-    <direction>Input</direction>
-    <width>1</width>
-    <role>ena</role>
-   </port>
-   <port>
-    <name>usr1_5</name>
-    <direction>Input</direction>
-    <width>1</width>
-    <role>usr1</role>
-   </port>
-   <port>
-    <name>clr_5</name>
-    <direction>Input</direction>
-    <width>1</width>
-    <role>clr</role>
-   </port>
-   <port>
-    <name>clrn_5</name>
-    <direction>Input</direction>
-    <width>1</width>
-    <role>clrn</role>
-   </port>
-   <port>
-    <name>jtag_state_tlr_5</name>
-    <direction>Input</direction>
-    <width>1</width>
-    <role>jtag_state_tlr</role>
-   </port>
-   <port>
-    <name>jtag_state_rti_5</name>
-    <direction>Input</direction>
-    <width>1</width>
-    <role>jtag_state_rti</role>
-   </port>
-   <port>
-    <name>jtag_state_sdrs_5</name>
-    <direction>Input</direction>
-    <width>1</width>
-    <role>jtag_state_sdrs</role>
-   </port>
-   <port>
-    <name>jtag_state_cdr_5</name>
-    <direction>Input</direction>
-    <width>1</width>
-    <role>jtag_state_cdr</role>
-   </port>
-   <port>
-    <name>jtag_state_sdr_5</name>
-    <direction>Input</direction>
-    <width>1</width>
-    <role>jtag_state_sdr</role>
-   </port>
-   <port>
-    <name>jtag_state_e1dr_5</name>
-    <direction>Input</direction>
-    <width>1</width>
-    <role>jtag_state_e1dr</role>
-   </port>
-   <port>
-    <name>jtag_state_pdr_5</name>
-    <direction>Input</direction>
-    <width>1</width>
-    <role>jtag_state_pdr</role>
-   </port>
-   <port>
-    <name>jtag_state_e2dr_5</name>
-    <direction>Input</direction>
-    <width>1</width>
-    <role>jtag_state_e2dr</role>
-   </port>
-   <port>
-    <name>jtag_state_udr_5</name>
-    <direction>Input</direction>
-    <width>1</width>
-    <role>jtag_state_udr</role>
-   </port>
-   <port>
-    <name>jtag_state_sirs_5</name>
-    <direction>Input</direction>
-    <width>1</width>
-    <role>jtag_state_sirs</role>
-   </port>
-   <port>
-    <name>jtag_state_cir_5</name>
-    <direction>Input</direction>
-    <width>1</width>
-    <role>jtag_state_cir</role>
-   </port>
-   <port>
-    <name>jtag_state_sir_5</name>
-    <direction>Input</direction>
-    <width>1</width>
-    <role>jtag_state_sir</role>
-   </port>
-   <port>
-    <name>jtag_state_e1ir_5</name>
-    <direction>Input</direction>
-    <width>1</width>
-    <role>jtag_state_e1ir</role>
-   </port>
-   <port>
-    <name>jtag_state_pir_5</name>
-    <direction>Input</direction>
-    <width>1</width>
-    <role>jtag_state_pir</role>
-   </port>
-   <port>
-    <name>jtag_state_e2ir_5</name>
-    <direction>Input</direction>
-    <width>1</width>
-    <role>jtag_state_e2ir</role>
-   </port>
-   <port>
-    <name>jtag_state_uir_5</name>
-    <direction>Input</direction>
-    <width>1</width>
-    <role>jtag_state_uir</role>
-   </port>
-   <port>
-    <name>ir_in_5</name>
-    <direction>Input</direction>
-    <width>4</width>
-    <role>ir_in</role>
-   </port>
-   <port>
-    <name>irq_5</name>
-    <direction>Output</direction>
-    <width>1</width>
-    <role>irq</role>
-   </port>
-   <port>
-    <name>ir_out_5</name>
     <direction>Output</direction>
     <width>4</width>
     <role>ir_out</role>
@@ -2414,7 +2142,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="SETTINGS">
    <type>java.lang.String</type>
-   <value>{mfr_code 110 type_code 132 version 1 instance 0 ir_width 3 bridge_agent 0 prefer_host {} } {mfr_code 110 type_code 132 version 1 instance 1 ir_width 3 bridge_agent 0 prefer_host {} } {mfr_code 110 type_code 128 version 1 instance 0 ir_width 1 bridge_agent 0 prefer_host {} } {mfr_code 110 type_code 3 version 2 instance 0 ir_width 8 bridge_agent 0 prefer_host {} } {mfr_code 110 type_code 3 version 2 instance 1 ir_width 8 bridge_agent 0 prefer_host {} } {mfr_code 110 type_code 9 version 0 instance 0 ir_width 4 bridge_agent 0 prefer_host {} } </value>
+   <value>{mfr_code 110 type_code 132 version 1 instance 0 ir_width 3 bridge_agent 0 prefer_host {} } {mfr_code 110 type_code 132 version 1 instance 1 ir_width 3 bridge_agent 0 prefer_host {} } {mfr_code 110 type_code 128 version 1 instance 0 ir_width 1 bridge_agent 0 prefer_host {} } {mfr_code 110 type_code 3 version 2 instance 0 ir_width 8 bridge_agent 0 prefer_host {} } {mfr_code 110 type_code 9 version 0 instance 0 ir_width 4 bridge_agent 0 prefer_host {} } </value>
    <derived>false</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -2422,7 +2150,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="COUNT">
    <type>int</type>
-   <value>6</value>
+   <value>5</value>
    <derived>false</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -2446,7 +2174,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="NODE_INFO">
    <type>java.lang.String</type>
-   <value>000000000100100001101110000000000001000000011000011011100000000100010000000110000110111000000000000011000000000001101110000000000000110000100000011011100000000100001100001000000110111000000000</value>
+   <value>0000000001001000011011100000000000010000000110000110111000000000000011000000000001101110000000000000110000100000011011100000000100001100001000000110111000000000</value>
    <derived>true</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -3851,7 +3579,7 @@ parameters are a RESULT of the module parameters. -->
    </assignment>
    <assignment>
     <name>debug.encodedSldId</name>
-    <value>270036481</value>
+    <value>4746752</value>
    </assignment>
    <assignment>
     <name>debug.providesServices</name>
@@ -3894,13 +3622,13 @@ parameters are a RESULT of the module parameters. -->
    <port>
     <name>node_ir_in_1d_4</name>
     <direction>Output</direction>
-    <width>8</width>
+    <width>4</width>
     <role>ir_in</role>
    </port>
    <port>
     <name>node_ir_out_1d_4</name>
     <direction>Input</direction>
-    <width>8</width>
+    <width>4</width>
     <role>ir_out</role>
    </port>
    <port>
@@ -4048,288 +3776,6 @@ parameters are a RESULT of the module parameters. -->
     <role>jtag_state_uir</role>
    </port>
   </interface>
-  <interface name="clock_5" kind="clock_source" version="23.1">
-   <!-- The connection points exposed by a module instance for the
-particular module parameters. Connection points and their
-parameters are a RESULT of the module parameters. -->
-   <parameter name="associatedDirectClock">
-    <type>java.lang.String</type>
-    <value></value>
-    <derived>false</derived>
-    <enabled>true</enabled>
-    <visible>true</visible>
-    <valid>true</valid>
-   </parameter>
-   <parameter name="clockRate">
-    <type>long</type>
-    <value>0</value>
-    <derived>false</derived>
-    <enabled>true</enabled>
-    <visible>true</visible>
-    <valid>true</valid>
-   </parameter>
-   <parameter name="clockRateKnown">
-    <type>boolean</type>
-    <value>false</value>
-    <derived>false</derived>
-    <enabled>true</enabled>
-    <visible>true</visible>
-    <valid>true</valid>
-   </parameter>
-   <parameter name="externallyDriven">
-    <type>boolean</type>
-    <value>false</value>
-    <derived>false</derived>
-    <enabled>true</enabled>
-    <visible>false</visible>
-    <valid>true</valid>
-   </parameter>
-   <parameter name="ptfSchematicName">
-    <type>java.lang.String</type>
-    <value></value>
-    <derived>false</derived>
-    <enabled>true</enabled>
-    <visible>false</visible>
-    <valid>true</valid>
-   </parameter>
-   <parameter name="deviceFamily">
-    <type>java.lang.String</type>
-    <value>UNKNOWN</value>
-    <derived>false</derived>
-    <enabled>true</enabled>
-    <visible>true</visible>
-    <valid>true</valid>
-   </parameter>
-   <parameter name="generateLegacySim">
-    <type>boolean</type>
-    <value>false</value>
-    <derived>false</derived>
-    <enabled>true</enabled>
-    <visible>true</visible>
-    <valid>true</valid>
-   </parameter>
-   <type>clock</type>
-   <isStart>true</isStart>
-   <port>
-    <name>node_raw_tck_5</name>
-    <direction>Output</direction>
-    <width>1</width>
-    <role>clk</role>
-   </port>
-   <clockDomainMember>
-    <isBridge>false</isBridge>
-    <moduleName>alt_sld_fab_splitter</moduleName>
-    <slaveName>clock_5</slaveName>
-    <name>alt_sld_fab_splitter.clock_5</name>
-   </clockDomainMember>
-  </interface>
-  <interface name="node_5" kind="conduit_end" version="23.1">
-   <!-- The connection points exposed by a module instance for the
-particular module parameters. Connection points and their
-parameters are a RESULT of the module parameters. -->
-   <assignment>
-    <name>debug.controlledBy</name>
-    <value>node</value>
-   </assignment>
-   <assignment>
-    <name>debug.encodedSldId</name>
-    <value>4746752</value>
-   </assignment>
-   <assignment>
-    <name>debug.providesServices</name>
-    <value>sld</value>
-   </assignment>
-   <parameter name="associatedClock">
-    <type>java.lang.String</type>
-    <value>clock_5</value>
-    <derived>false</derived>
-    <enabled>true</enabled>
-    <visible>true</visible>
-    <valid>true</valid>
-   </parameter>
-   <parameter name="associatedReset">
-    <type>java.lang.String</type>
-    <value></value>
-    <derived>false</derived>
-    <enabled>true</enabled>
-    <visible>true</visible>
-    <valid>true</valid>
-   </parameter>
-   <parameter name="deviceFamily">
-    <type>java.lang.String</type>
-    <value>UNKNOWN</value>
-    <derived>false</derived>
-    <enabled>true</enabled>
-    <visible>true</visible>
-    <valid>true</valid>
-   </parameter>
-   <parameter name="generateLegacySim">
-    <type>boolean</type>
-    <value>false</value>
-    <derived>false</derived>
-    <enabled>true</enabled>
-    <visible>true</visible>
-    <valid>true</valid>
-   </parameter>
-   <type>conduit</type>
-   <isStart>false</isStart>
-   <port>
-    <name>node_ir_in_1d_5</name>
-    <direction>Output</direction>
-    <width>4</width>
-    <role>ir_in</role>
-   </port>
-   <port>
-    <name>node_ir_out_1d_5</name>
-    <direction>Input</direction>
-    <width>4</width>
-    <role>ir_out</role>
-   </port>
-   <port>
-    <name>node_tdo_5</name>
-    <direction>Input</direction>
-    <width>1</width>
-    <role>tdo</role>
-   </port>
-   <port>
-    <name>node_irq_5</name>
-    <direction>Input</direction>
-    <width>1</width>
-    <role>irq</role>
-   </port>
-   <port>
-    <name>node_raw_tms_5</name>
-    <direction>Output</direction>
-    <width>1</width>
-    <role>tms</role>
-   </port>
-   <port>
-    <name>node_tdi_5</name>
-    <direction>Output</direction>
-    <width>1</width>
-    <role>tdi</role>
-   </port>
-   <port>
-    <name>node_clr_5</name>
-    <direction>Output</direction>
-    <width>1</width>
-    <role>clr</role>
-   </port>
-   <port>
-    <name>node_clrn_5</name>
-    <direction>Output</direction>
-    <width>1</width>
-    <role>clrn</role>
-   </port>
-   <port>
-    <name>node_usr1_5</name>
-    <direction>Output</direction>
-    <width>1</width>
-    <role>usr1</role>
-   </port>
-   <port>
-    <name>node_ena_5</name>
-    <direction>Output</direction>
-    <width>1</width>
-    <role>ena</role>
-   </port>
-   <port>
-    <name>node_jtag_state_tlr_5</name>
-    <direction>Output</direction>
-    <width>1</width>
-    <role>jtag_state_tlr</role>
-   </port>
-   <port>
-    <name>node_jtag_state_rti_5</name>
-    <direction>Output</direction>
-    <width>1</width>
-    <role>jtag_state_rti</role>
-   </port>
-   <port>
-    <name>node_jtag_state_sdrs_5</name>
-    <direction>Output</direction>
-    <width>1</width>
-    <role>jtag_state_sdrs</role>
-   </port>
-   <port>
-    <name>node_jtag_state_cdr_5</name>
-    <direction>Output</direction>
-    <width>1</width>
-    <role>jtag_state_cdr</role>
-   </port>
-   <port>
-    <name>node_jtag_state_sdr_5</name>
-    <direction>Output</direction>
-    <width>1</width>
-    <role>jtag_state_sdr</role>
-   </port>
-   <port>
-    <name>node_jtag_state_e1dr_5</name>
-    <direction>Output</direction>
-    <width>1</width>
-    <role>jtag_state_e1dr</role>
-   </port>
-   <port>
-    <name>node_jtag_state_pdr_5</name>
-    <direction>Output</direction>
-    <width>1</width>
-    <role>jtag_state_pdr</role>
-   </port>
-   <port>
-    <name>node_jtag_state_e2dr_5</name>
-    <direction>Output</direction>
-    <width>1</width>
-    <role>jtag_state_e2dr</role>
-   </port>
-   <port>
-    <name>node_jtag_state_udr_5</name>
-    <direction>Output</direction>
-    <width>1</width>
-    <role>jtag_state_udr</role>
-   </port>
-   <port>
-    <name>node_jtag_state_sirs_5</name>
-    <direction>Output</direction>
-    <width>1</width>
-    <role>jtag_state_sirs</role>
-   </port>
-   <port>
-    <name>node_jtag_state_cir_5</name>
-    <direction>Output</direction>
-    <width>1</width>
-    <role>jtag_state_cir</role>
-   </port>
-   <port>
-    <name>node_jtag_state_sir_5</name>
-    <direction>Output</direction>
-    <width>1</width>
-    <role>jtag_state_sir</role>
-   </port>
-   <port>
-    <name>node_jtag_state_e1ir_5</name>
-    <direction>Output</direction>
-    <width>1</width>
-    <role>jtag_state_e1ir</role>
-   </port>
-   <port>
-    <name>node_jtag_state_pir_5</name>
-    <direction>Output</direction>
-    <width>1</width>
-    <role>jtag_state_pir</role>
-   </port>
-   <port>
-    <name>node_jtag_state_e2ir_5</name>
-    <direction>Output</direction>
-    <width>1</width>
-    <role>jtag_state_e2ir</role>
-   </port>
-   <port>
-    <name>node_jtag_state_uir_5</name>
-    <direction>Output</direction>
-    <width>1</width>
-    <role>jtag_state_uir</role>
-   </port>
-  </interface>
   <interface name="ident" kind="conduit_end" version="23.1">
    <!-- The connection points exposed by a module instance for the
 particular module parameters. Connection points and their
@@ -4397,7 +3843,7 @@ parameters are a RESULT of the module parameters. -->
 the requested settings for a module instance. -->
   <parameter name="DESIGN_HASH">
    <type>java.lang.String</type>
-   <value>b8c58390a80b1160f114</value>
+   <value>ab1c0e3c8ab1d885f38d</value>
    <derived>false</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -5125,100 +4571,6 @@ parameters are a RESULT of the module parameters. -->
   <endConnectionPoint>node_4</endConnectionPoint>
  </connection>
  <connection
-   name="alt_sld_fab_sldfabric.clock_5/alt_sld_fab_splitter.clock_5"
-   kind="clock"
-   version="23.1"
-   start="alt_sld_fab_sldfabric.clock_5"
-   end="alt_sld_fab_splitter.clock_5">
-  <parameter name="deviceFamily">
-   <type>java.lang.String</type>
-   <value>UNKNOWN</value>
-   <derived>false</derived>
-   <enabled>true</enabled>
-   <visible>true</visible>
-   <valid>true</valid>
-  </parameter>
-  <parameter name="generateLegacySim">
-   <type>boolean</type>
-   <value>false</value>
-   <derived>false</derived>
-   <enabled>true</enabled>
-   <visible>true</visible>
-   <valid>true</valid>
-  </parameter>
-  <startModule>alt_sld_fab_sldfabric</startModule>
-  <startConnectionPoint>clock_5</startConnectionPoint>
-  <endModule>alt_sld_fab_splitter</endModule>
-  <endConnectionPoint>clock_5</endConnectionPoint>
- </connection>
- <connection
-   name="alt_sld_fab_sldfabric.node_5/alt_sld_fab_splitter.node_5"
-   kind="conduit"
-   version="23.1"
-   start="alt_sld_fab_sldfabric.node_5"
-   end="alt_sld_fab_splitter.node_5">
-  <parameter name="endPort">
-   <type>com.altera.entityinterfaces.IPort</type>
-   <value></value>
-   <derived>false</derived>
-   <enabled>true</enabled>
-   <visible>true</visible>
-   <valid>true</valid>
-  </parameter>
-  <parameter name="endPortLSB">
-   <type>int</type>
-   <value>0</value>
-   <derived>false</derived>
-   <enabled>true</enabled>
-   <visible>true</visible>
-   <valid>true</valid>
-  </parameter>
-  <parameter name="startPort">
-   <type>com.altera.entityinterfaces.IPort</type>
-   <value></value>
-   <derived>false</derived>
-   <enabled>true</enabled>
-   <visible>true</visible>
-   <valid>true</valid>
-  </parameter>
-  <parameter name="startPortLSB">
-   <type>int</type>
-   <value>0</value>
-   <derived>false</derived>
-   <enabled>true</enabled>
-   <visible>true</visible>
-   <valid>true</valid>
-  </parameter>
-  <parameter name="width">
-   <type>int</type>
-   <value>0</value>
-   <derived>false</derived>
-   <enabled>true</enabled>
-   <visible>true</visible>
-   <valid>true</valid>
-  </parameter>
-  <parameter name="deviceFamily">
-   <type>java.lang.String</type>
-   <value>UNKNOWN</value>
-   <derived>false</derived>
-   <enabled>true</enabled>
-   <visible>true</visible>
-   <valid>true</valid>
-  </parameter>
-  <parameter name="generateLegacySim">
-   <type>boolean</type>
-   <value>false</value>
-   <derived>false</derived>
-   <enabled>true</enabled>
-   <visible>true</visible>
-   <valid>true</valid>
-  </parameter>
-  <startModule>alt_sld_fab_sldfabric</startModule>
-  <startConnectionPoint>node_5</startConnectionPoint>
-  <endModule>alt_sld_fab_splitter</endModule>
-  <endConnectionPoint>node_5</endConnectionPoint>
- </connection>
- <connection
    name="alt_sld_fab_sldfabric.ident/alt_sld_fab_ident.ident_0"
    kind="conduit"
    version="23.1"
@@ -5294,7 +4646,7 @@ parameters are a RESULT of the module parameters. -->
   <version>23.1</version>
  </plugin>
  <plugin>
-  <instanceCount>22</instanceCount>
+  <instanceCount>20</instanceCount>
   <name>conduit_end</name>
   <type>com.altera.entityinterfaces.IElementClass</type>
   <subtype>com.altera.entityinterfaces.IMutableConnectionPoint</subtype>
@@ -5318,7 +4670,7 @@ parameters are a RESULT of the module parameters. -->
   <version>23.1</version>
  </plugin>
  <plugin>
-  <instanceCount>7</instanceCount>
+  <instanceCount>6</instanceCount>
   <name>clock_sink</name>
   <type>com.altera.entityinterfaces.IElementClass</type>
   <subtype>com.altera.entityinterfaces.IMutableConnectionPoint</subtype>
@@ -5334,7 +4686,7 @@ parameters are a RESULT of the module parameters. -->
   <version>23.1</version>
  </plugin>
  <plugin>
-  <instanceCount>7</instanceCount>
+  <instanceCount>6</instanceCount>
   <name>clock_source</name>
   <type>com.altera.entityinterfaces.IElementClass</type>
   <subtype>com.altera.entityinterfaces.IMutableConnectionPoint</subtype>
@@ -5358,7 +4710,7 @@ parameters are a RESULT of the module parameters. -->
   <version>23.1</version>
  </plugin>
  <plugin>
-  <instanceCount>9</instanceCount>
+  <instanceCount>8</instanceCount>
   <name>conduit</name>
   <type>com.altera.entityinterfaces.IElementClass</type>
   <subtype>com.altera.entityinterfaces.IConnection</subtype>
@@ -5366,7 +4718,7 @@ parameters are a RESULT of the module parameters. -->
   <version>23.1</version>
  </plugin>
  <plugin>
-  <instanceCount>7</instanceCount>
+  <instanceCount>6</instanceCount>
   <name>clock</name>
   <type>com.altera.entityinterfaces.IElementClass</type>
   <subtype>com.altera.entityinterfaces.IConnection</subtype>

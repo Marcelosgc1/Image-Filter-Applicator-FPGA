@@ -39,216 +39,151 @@ module top(
 					WRITE = 4'b0010,
 					
 					//ARI-OPERATIONS
-					SUM = 4'b0011,
-					SUB = 4'b0100,
-					MUL = 4'b0101, 	//conv. 1 matriz
-					TRANSP = 4'b0110,	//conv. 2 matriz transposta
-					OPST = 4'b0111,	//conv. 2 matriz 45 graus
-					MULSCL = 4'b1000,
-					DET2 = 4'b1001,
-					DET3 = 4'b1010,
-					DET4 = 4'b1011,
-					DET5 = 4'b1100,
+					CONV = 4'b0101, 	//conv. 1 matriz
+					CONV_TRSP = 4'b0110,	//conv. 2 matriz transposta
+					CONV_ROB = 4'b0111,	//conv. 2 matriz 45 graus
 					PHOTO_CONV = 4'b1110,
 					READ_IMAGE = 4'b1111;
 					
-	assign data_read = hps_read_image ? ram_data_out : data_out;
+	assign data_read = hps_read_image ? ram_data_out : output_reg;
 	
 	reg [2:0] state = FETCH;
 	reg [31:0] fetched_instruction = 0;
-	reg [1:0] count_br;
 	
-	reg wr, start, start_memory, start_ALU, loaded, implict_memory = 0, write_resul = 0, last_done; 
-	wire done, done_alu, done_mem, done_pulse, activate_instruction, activate_ipu;
+	reg start; 
+	wire done_conv, activate_instruction, activate_ipu;
 	
 	assign activate_instruction = activate_signal[0];
 	assign activate_ipu = activate_signal[0];
 	
-	reg [7:0] count_mem;
-	
-	wire [199:0] matrix_A, operandA; //registradores p/ salvar valores
-	wire [199:0] matrix_B, operandB;
-	wire [199:0] matrix_C;
-	wire [7:0]address_instruction, address;
+	wire [199:0] matrix_A, operandA, matrix_B, operandB; 
+	wire [31:0] matrix_C;
+	wire [23:0] matrix_result;
+	wire [15:0] decoded_data, result_ula;
+	wire [7:0] address_instruction;
 	wire [3:0] opcode;
-	wire [15:0] data, data_out, result_ula, data_to_write;
+	
+	
+	//NEW STUFF HERE:
+	reg write_enable_reg;
+	reg [15:0] output_reg;
+	
 	
 	decoder(
 		fetched_instruction,
 		opcode,
 		address_instruction,
-		data
+		decoded_data
 	);
 	
-	memory_mod(
-		address,
-		data_to_write,
-		start_memory,
-		wr,
-		clk,
-		data_out,
-		done_mem
-	);
-	
-	alu(
-		clk,
-		opcode,
-		data,
-		operandA,
-		matrix_B,
-		start_ALU,
-		matrix_C,
-		done_alu
+	conv_geratriz(
+		operandA, 
+		operandB, 
+		opcode[1:0], 
+		clk, 
+		start, 
+		matrix_result, 
+		done_conv
 	);
 	
 	br(
-		done,
-		data_out,
-		address,
-		matrix_C,
+		clk,
+		write_enable_reg,
+		done_conv,
+		decoded_data,
+		address_instruction[5:0],
+		matrix_result,
 		matrix_A,
 		matrix_B,
+		matrix_C,
 		result_ula
 	);
 	
-	assign operandA = ipu_request ? buf_matrix : matrix_A;
-	assign wait_signal = state != FETCH;
-	assign done_pulse = done & !last_done;
-	assign done = (loaded & !write_resul) ? done_alu : done_mem;
-	assign data_to_write = write_resul ? result_ula : data;
-	assign address = implict_memory ? count_mem : address_instruction;
+	assign operandA = ipu_request ? buf_matrix 
+											: matrix_A;
+
+	assign operandB = ipu_request ? {8'h00,8'h00,8'h00,8'h00,8'h00,
+												8'h00,8'h00,8'h00,8'hFF,8'h00,
+												8'h00,8'h00,8'h00,8'h00,8'h01}
+											: matrix_B;
+	
+	//ALIAS
+	assign wait_signal = (state != FETCH);
+	assign IS_MEM_OP = (opcode == WRITE) | (opcode == READ);
+	assign IS_WR_OP = (opcode == WRITE);
 	
 	always @(posedge clk) begin
-		
-		//level to pulse do sinal de 'done' concluido 
-		last_done <= done;
-		
-		
-		//MUX para iniciar operacoes aritimeticas ou de memoria
-		if ((opcode == WRITE) | (opcode == READ) | !loaded | write_resul) begin
-			start_memory <= start;
-		end else begin
-			start_ALU <= start;
-		end
-	
-	
 		//MEF
 		case (state)
 			//Estado de busca
 			FETCH: begin
 				//quando recebe activate_instruction, muda de estado
-				if (activate_instruction | ipu_request) begin	
-					fetched_instruction = ipu_request ? ipu_inst : instruction;
-					state = DECODE;
+				if (ipu_request) begin	
+					fetched_instruction <= ipu_inst;
+					state <= IS_MEM_OP ? MEMORY : EXECUTE;
+				end else if (activate_instruction) begin
+					fetched_instruction <= instruction;
+					state <= IS_MEM_OP ? MEMORY : EXECUTE;
 				end else begin
-					state = FETCH;
+					state <= FETCH;
 				end
+				
+				//RESTART SIGNALS
+				write_enable_reg <= 0;
+				start <= 0;
 			end
 			
-			//redireciona estado para de memoria ou operacao de matriz
-			DECODE: begin
-				if ((opcode == WRITE) | (opcode == READ)) begin
-					state = MEMORY;
-				end else begin
-					state = EXECUTE;
-				end
-			end
 			
 			//Estado para operacoes de memoria
 			MEMORY: begin
 				//operacao explicita de memoria
-				if ((opcode == WRITE) | (opcode == READ)) begin
-					implict_memory = 0;
-					if (done_pulse) begin
-						start = 0;
-						state = FETCH;
-						wr = 0;
-					end else begin
-						wr = (opcode == WRITE);
-						start = 1;
-					end
-					
-				//operacao implicita de memoria
-				//salva/carrega valores da memoria em registradores para operar matrizes
-				end else begin
-					implict_memory = 1;
-					//aguarda modulo de memoria completar leitura
-					if (done_pulse) begin
-						start = 0;
-						//aguarda banco de registrador ser escrito
-						if (count_br < 2) begin
-							count_br = count_br + 1;
-						//comeca a contar cada endereco de memoria
-						end else if (count_mem[3:0] < 12) begin
-							count_mem[3:0] = count_mem[3:0] + 1;
-							loaded = 0;
-							count_br = 0;
-							state = MEMORY;
-						end else if (!(count_mem[4] | count_mem[5])) begin
-							count_mem[3:0] = 0;
-							count_mem[4] = 1;
-							loaded = 0;
-							count_br = 0;
-							state = MEMORY;
-						end else if (count_mem[5]) begin
-							wr = 0;
-							count_mem = 0;
-							write_resul = 0;
-							count_br = 0;
-							state = FETCH;
-						end else if (write_resul) begin
-							count_mem[4] = 0;
-							count_mem[5] = 1;
-							count_mem[3:0] = 0;
-							wr = 1;
-							count_br = 0;
-							state = MEMORY;
-						//matrizes carregadas
-						end else begin
-							loaded = 1;
-							implict_memory = 0;
-							count_br = 0;
-							state = EXECUTE;
-						end
-					end else begin
-						loaded = 0;
-						start = 1;
-					end
-				
-				
-				end
+				write_enable_reg <= IS_WR_OP;
+				output_reg <= result_ula;
+				state <= FETCH;
 			end
 			
 			//realiza operacoes de matriz
 			EXECUTE: begin
-				//manda carregar matrizes
-				if (!loaded) state = MEMORY;
-				else begin
-					//manda escrever na memoria
-					if (done_pulse) begin
-						start = 0;
-						loaded = 0;
-						write_resul = 1;
-						state = MEMORY;
-						
-					//aguarda alu terminar operacao
-					end else begin
-						start = 1;
-					end
+				//manda escrever na memoria
+				if (!done_conv) begin
+					start <= 1;
+				//aguarda alu terminar operacao
+				end else begin
+					start <= 0;
+					state <= FETCH;
 				end
 			end
 			
-			default: state = FETCH;
+			default: state <= FETCH;
 			
 		endcase
 	end
 
 	
+	
+  /*
+	* IPU
+	* IPU
+	* IPU
+	* IPU
+	* IPU
+	* IPU
+	* IPU
+	* IPU
+	* IPU
+	* IPU
+	*/
 
-	assign convolution_opcode = (opcode==MUL || opcode==TRANSP || opcode==OPST);
+	
+	parameter
+					WAIT_CONV	= 2'b00,
+					LOAD_BUFFER	= 2'b01,
+					SEND_CONV 	= 2'b00;
+	
+	assign convolution_opcode = (opcode==CONV || opcode==CONV_TRSP || opcode==CONV_ROB);
 	reg write_vga, select_cam, curr_result, start_process, ipu_request, start_buf;
-	reg [1:0]size;
-	reg [2:0]ipu_state, loader;
+	reg [1:0]size, ipu_state;
+	reg [2:0]loader;
 	reg [7:0]pixel_color;
 	reg [8:0]h_count_conv, v_count_conv, h_count_buf, v_count_buf;
 	reg [31:0] ipu_inst;
@@ -269,13 +204,14 @@ module top(
 	
 	assign hps_read_image = instruction[3:0]==READ_IMAGE;
 	assign hps_image_address = instruction[19:4];
+	assign last_col = (h_count_buf == 9'd508);
+	
 	
 	always @ (posedge clk) begin
-		
 		case (ipu_state)
-			0: begin
+			WAIT_CONV: begin
 				if(instruction[3:0]==PHOTO_CONV & !start_process) begin
-					ipu_state <= 1;
+					ipu_state <= LOAD_BUFFER;
 					size <= instruction[5:4];
 					start_process <= 1;
 				end else if (instruction[3:0]!=PHOTO_CONV) begin
@@ -292,26 +228,40 @@ module top(
 				curr_result <= 0;
 			end
 			
-			1: begin
+			LOAD_BUFFER: begin
 				if (!start_buf) begin
 					start_buf <= 1;
 					loader <= size + 1;
 				end else begin
-					loader <= loader - (h_count_buf == 9'd508);
-					h_count_buf <= (h_count_buf == 9'd508) ? 0 : h_count_buf + 4;
-					v_count_buf <= v_count_buf + (h_count_buf == 9'd508);
-					ipu_state <= (h_count_buf == 9'd508) & loader == 0 ? 2 : 1 ;
-					start_buf <= (h_count_buf != 9'd508) | loader != 0;
+					if (last_col) begin
+						h_count_buf <= 0;
+						v_count_buf <= v_count_buf + 1;
+						if (loader == 0) begin
+							ipu_state <= SEND_CONV;
+							start_buf <= 0;
+						end else begin
+							ipu_state <= LOAD_BUFFER;
+							start_buf <= 1;
+							loader <= loader - 1;
+						end
+					end else begin
+						loader <= 0;
+						h_count_buf <= h_count_buf + 4;
+						v_count_buf <= v_count_buf;
+						start_buf <= 1;
+					end
+					
+				
 				end
 			end
 			
-			2: begin
+			SEND_CONV: begin
 				if (!wait_signal) begin
 					ipu_request <= 1;
-					ipu_inst <= {h_count_conv,v_count_conv,4'b0111};
+					ipu_inst <= {v_count_conv,h_count_conv,4'b0111};
 					curr_result <= 0;
 				end else if (ipu_request) begin
-					if (done_alu & !curr_result) begin
+					if (done_conv & !curr_result) begin
 						curr_result <= 1;
 						ipu_request <= 0;
 						if(h_count_conv==9'h1ff)begin
@@ -339,8 +289,8 @@ module top(
 	
 		
 		
-		if (convolution_opcode & done_alu & !write_vga) begin
-			pixel_color <= (opcode==MUL) ? (matrix_C[7:0]) : (matrix_C[23:16]);
+		if (convolution_opcode & done_conv & !write_vga) begin
+			pixel_color <= (opcode==CONV) ? (matrix_C[7:0]) : (matrix_C[23:16]);
 			write_vga <= 1;
 		end
 		else if (write_vga & vga_ram_done) begin

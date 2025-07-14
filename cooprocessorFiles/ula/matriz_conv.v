@@ -1,8 +1,6 @@
-//MULTIPLICAÇAO 20 ADP BLOCK
-
 module matriz_conv (
-  input [199:0] matriz_a, // Matriz A (5x5, 8 bits por elemento)
-  input signed [199:0] matriz_b, // Matriz B (5x5, 8 bits por elemento)
+  input [199:0] matriz_a,
+  input signed [199:0] matriz_b,
   input clk,
   input start,
   output [7:0] result, 
