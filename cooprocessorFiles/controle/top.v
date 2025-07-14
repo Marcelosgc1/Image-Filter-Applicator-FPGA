@@ -45,122 +45,43 @@ module top(
 					PHOTO_CONV = 4'b1110,
 					READ_IMAGE = 4'b1111;
 					
-	assign data_read = hps_read_image ? ram_data_out : output_reg;
-	
-	reg [2:0] state = FETCH;
-	reg [31:0] fetched_instruction = 0;
-	
-	reg start; 
+	assign data_read = hps_read_image ? ram_data_out : coprocessor_data;
+	 
 	wire done_conv, activate_instruction, activate_ipu;
 	
 	assign activate_instruction = activate_signal[0];
 	assign activate_ipu = activate_signal[0];
 	
-	wire [199:0] matrix_A, operandA, matrix_B, operandB; 
-	wire [31:0] matrix_C;
-	wire [23:0] matrix_result;
-	wire [15:0] decoded_data, result_ula;
-	wire [7:0] address_instruction;
+	wire [199:0] operandA, operandB; 
+	wire [31:0] matrix_C, sent_instruction, fetched_instruction;
+	wire [15:0] coprocessor_data;
 	wire [3:0] opcode;
 	
-	
-	//NEW STUFF HERE:
-	reg write_enable_reg;
-	reg [15:0] output_reg;
+	assign sent_instruction = ipu_request ? ipu_inst : instruction;
 	
 	
-	decoder(
-		fetched_instruction,
-		opcode,
-		address_instruction,
-		decoded_data
-	);
-	
-	conv_geratriz(
+	convolution_coprocessor(
+		sent_instruction,
+		(activate_instruction | ipu_request), 
+		coprocessor_data,
+		wait_signal,
+		ipu_request,
 		operandA, 
-		operandB, 
-		opcode[1:0], 
-		clk, 
-		start, 
-		matrix_result, 
-		done_conv
-	);
-	
-	br(
-		clk,
-		write_enable_reg,
+		operandB,
 		done_conv,
-		decoded_data,
-		address_instruction[5:0],
-		matrix_result,
-		matrix_A,
-		matrix_B,
-		matrix_C,
-		result_ula
-	);
+		matrix_C, 
+		fetched_instruction,
+		opcode
+);
 	
-	assign operandA = ipu_request ? buf_matrix 
-											: matrix_A;
+	
+	
+	
+	assign operandA = buf_matrix;
 
-	assign operandB = ipu_request ? {8'h00,8'h00,8'h00,8'h00,8'h00,
-												8'h00,8'h00,8'h00,8'hFF,8'h00,
-												8'h00,8'h00,8'h00,8'h00,8'h01}
-											: matrix_B;
-	
-	//ALIAS
-	assign wait_signal = (state != FETCH);
-	assign IS_MEM_OP = (opcode == WRITE) | (opcode == READ);
-	assign IS_WR_OP = (opcode == WRITE);
-	
-	always @(posedge clk) begin
-		//MEF
-		case (state)
-			//Estado de busca
-			FETCH: begin
-				//quando recebe activate_instruction, muda de estado
-				if (ipu_request) begin	
-					fetched_instruction <= ipu_inst;
-					state <= IS_MEM_OP ? MEMORY : EXECUTE;
-				end else if (activate_instruction) begin
-					fetched_instruction <= instruction;
-					state <= IS_MEM_OP ? MEMORY : EXECUTE;
-				end else begin
-					state <= FETCH;
-				end
-				
-				//RESTART SIGNALS
-				write_enable_reg <= 0;
-				start <= 0;
-			end
-			
-			
-			//Estado para operacoes de memoria
-			MEMORY: begin
-				//operacao explicita de memoria
-				write_enable_reg <= IS_WR_OP;
-				output_reg <= result_ula;
-				state <= FETCH;
-			end
-			
-			//realiza operacoes de matriz
-			EXECUTE: begin
-				//manda escrever na memoria
-				if (!done_conv) begin
-					start <= 1;
-				//aguarda alu terminar operacao
-				end else begin
-					start <= 0;
-					state <= FETCH;
-				end
-			end
-			
-			default: state <= FETCH;
-			
-		endcase
-	end
-
-	
-	
+	assign operandB = {8'h00,8'h00,8'h00,8'h00,8'h00,
+							 8'h00,8'h00,8'h00,8'hFF,8'h00,
+							 8'h00,8'h00,8'h00,8'h00,8'h01};
   /*
 	* IPU
 	* IPU
@@ -180,7 +101,6 @@ module top(
 					LOAD_BUFFER	= 2'b01,
 					SEND_CONV 	= 2'b00;
 	
-	assign convolution_opcode = (opcode==CONV || opcode==CONV_TRSP || opcode==CONV_ROB);
 	reg write_vga, select_cam, curr_result, start_process, ipu_request, start_buf;
 	reg [1:0]size, ipu_state;
 	reg [2:0]loader;
@@ -223,7 +143,6 @@ module top(
 				v_count_buf <= 0;
 				h_count_conv <= 0;
 				v_count_conv <= 0;
-				ipu_state <= 0;
 				ipu_request <= 0;
 				curr_result <= 0;
 			end
@@ -279,17 +198,14 @@ module top(
 							h_count_conv <= h_count_conv + 1;
 						end
 					end
-				
 				end
-			
 			end
-		
 		endcase
 	
 	
 		
 		
-		if (convolution_opcode & done_conv & !write_vga) begin
+		if (done_conv & !write_vga) begin
 			pixel_color <= (opcode==CONV) ? (matrix_C[7:0]) : (matrix_C[23:16]);
 			write_vga <= 1;
 		end
@@ -319,7 +235,7 @@ module top(
 		sw[3:2],
 		fetched_instruction[21:4], 
 		clk,
-		write_vga,
+		(write_vga | done_conv),
 		pixel_color,
 		ram_data_out,
 		vga_ram_done,

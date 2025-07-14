@@ -111,7 +111,7 @@ always @(posedge clk) begin
             4: begin
                 WRITE_ENABLE <= 0;
                 done <= 1;
-                count <= 0;
+                count <= 4;
             end
         endcase
     end
