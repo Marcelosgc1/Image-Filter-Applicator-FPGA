@@ -107,7 +107,7 @@ state.CAPT 1 1 0
 
 State Machine - |ghrd_top|top:comb_34|ipu_state
 Name ipu_state.01 
-ipu_state.00 0 
+ipu_state.WAIT_CONV 0 
 ipu_state.01 1 
 
 State Machine - |ghrd_top|top:comb_34|state
@@ -116,7 +116,7 @@ state.FETCH 0 0 0
 state.EXECUTE 1 0 1 
 state.MEMORY 1 1 0 
 
-State Machine - |ghrd_top|top:comb_34|vga_control:comb_1512|count
+State Machine - |ghrd_top|top:comb_34|vga_control:comb_1510|count
 Name count.0011 count.0010 count.0001 count.0000 count.0100 
 count.0000 0 0 0 0 0 
 count.0001 0 0 1 1 0 
@@ -124,14 +124,14 @@ count.0010 0 1 0 1 0
 count.0011 1 0 0 1 0 
 count.0100 0 0 0 1 1 
 
-State Machine - |ghrd_top|top:comb_34|vga_control:comb_1512|vga_driver:comb_48|v_state
+State Machine - |ghrd_top|top:comb_34|vga_control:comb_1510|vga_driver:comb_48|v_state
 Name v_state.V_BACK_STATE v_state.V_PULSE_STATE v_state.V_FRONT_STATE v_state.V_ACTIVE_STATE 
 v_state.V_ACTIVE_STATE 0 0 0 0 
 v_state.V_FRONT_STATE 0 0 1 1 
 v_state.V_PULSE_STATE 0 1 0 1 
 v_state.V_BACK_STATE 1 0 0 1 
 
-State Machine - |ghrd_top|top:comb_34|vga_control:comb_1512|vga_driver:comb_48|h_state
+State Machine - |ghrd_top|top:comb_34|vga_control:comb_1510|vga_driver:comb_48|h_state
 Name h_state.H_BACK_STATE h_state.H_PULSE_STATE h_state.H_FRONT_STATE h_state.H_ACTIVE_STATE 
 h_state.H_ACTIVE_STATE 0 0 0 0 
 h_state.H_FRONT_STATE 0 0 1 1 
@@ -157,7 +157,7 @@ state.READ_DATA_WAIT 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 1
 state.READ_SEND_ISSUE 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 1 
 state.READ_SEND_WAIT 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 
 
-State Machine - |ghrd_top|top:comb_34|DE2_D5M:comb_1511|I2C_CCD_Config:u8|mSetup_ST
+State Machine - |ghrd_top|top:comb_34|DE2_D5M:comb_1509|I2C_CCD_Config:u8|mSetup_ST
 Name mSetup_ST.0000 mSetup_ST.0010 mSetup_ST.0001 
 mSetup_ST.0000 0 0 0 
 mSetup_ST.0001 1 0 1 

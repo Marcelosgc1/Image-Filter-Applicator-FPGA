@@ -109,7 +109,7 @@ module top(
 	
 	//ALIAS
 	assign wait_signal = (state != FETCH);
-	assign IS_MEM_OP = (opcode == WRITE) | (opcode == READ);
+	assign IS_MEM_OP = (instruction[3:0] == WRITE) | (instruction[3:0] == READ);
 	assign IS_WR_OP = (opcode == WRITE);
 	
 	always @(posedge clk) begin
@@ -120,7 +120,7 @@ module top(
 				//quando recebe activate_instruction, muda de estado
 				if (ipu_request) begin	
 					fetched_instruction <= ipu_inst;
-					state <= IS_MEM_OP ? MEMORY : EXECUTE;
+					state <= EXECUTE;
 				end else if (activate_instruction) begin
 					fetched_instruction <= instruction;
 					state <= IS_MEM_OP ? MEMORY : EXECUTE;
@@ -223,7 +223,6 @@ module top(
 				v_count_buf <= 0;
 				h_count_conv <= 0;
 				v_count_conv <= 0;
-				ipu_state <= 0;
 				ipu_request <= 0;
 				curr_result <= 0;
 			end
