@@ -61,6 +61,7 @@ module top(
 	
 	
 	convolution_coprocessor(
+		clk,
 		sent_instruction,
 		(activate_instruction | ipu_request), 
 		coprocessor_data,
@@ -99,9 +100,9 @@ module top(
 	parameter
 					WAIT_CONV	= 2'b00,
 					LOAD_BUFFER	= 2'b01,
-					SEND_CONV 	= 2'b00;
+					SEND_CONV 	= 2'b10;
 	
-	reg write_vga, select_cam, curr_result, start_process, ipu_request, start_buf;
+	reg write_vga, start_process, ipu_request, start_buf;
 	reg [1:0]size, ipu_state;
 	reg [2:0]loader;
 	reg [7:0]pixel_color;
@@ -118,9 +119,10 @@ module top(
 	assign addr = start_buf ? address_buf : hps_read_image ? hps_image_address : cam_we | cam_valid_pixel ? cam_address : conv_address;
 	assign memory_clk = cam_we | cam_valid_pixel ? cam_clock : clk;
 	assign data_in = cam_we | cam_valid_pixel ? cam_data : conv_data;
-	//assign ipu_request = instruction[3:0]==RENDERIZAR & activate_ipu;
-	assign h_count = ipu_state==1 ? h_count_buf : h_count_conv;
-	assign v_count = ipu_state==1 ? v_count_buf : v_count_conv;
+	
+	//LEMBRAR DE TESTAR start_buf ? .. : ..; depois
+	assign h_count = ipu_state==LOAD_BUFFER ? h_count_buf : h_count_conv;
+	assign v_count = ipu_state==LOAD_BUFFER ? v_count_buf : v_count_conv;
 	
 	assign hps_read_image = instruction[3:0]==READ_IMAGE;
 	assign hps_image_address = instruction[19:4];
@@ -144,7 +146,6 @@ module top(
 				h_count_conv <= 0;
 				v_count_conv <= 0;
 				ipu_request <= 0;
-				curr_result <= 0;
 			end
 			
 			LOAD_BUFFER: begin
@@ -158,13 +159,14 @@ module top(
 						if (loader == 0) begin
 							ipu_state <= SEND_CONV;
 							start_buf <= 0;
+							loader <= loader;
 						end else begin
 							ipu_state <= LOAD_BUFFER;
 							start_buf <= 1;
 							loader <= loader - 1;
 						end
 					end else begin
-						loader <= 0;
+						loader <= loader;
 						h_count_buf <= h_count_buf + 4;
 						v_count_buf <= v_count_buf;
 						start_buf <= 1;
@@ -175,31 +177,43 @@ module top(
 			end
 			
 			SEND_CONV: begin
+				loader <= 0;
+				
 				if (!wait_signal) begin
 					ipu_request <= 1;
 					ipu_inst <= {v_count_conv,h_count_conv,4'b0111};
-					curr_result <= 0;
-				end else if (ipu_request) begin
-					if (done_conv & !curr_result) begin
-						curr_result <= 1;
-						ipu_request <= 0;
-						if(h_count_conv==9'h1ff)begin
-							if (v_count_conv==9'h1df) begin
-								ipu_state <= 0;
-							end else begin
-								h_count_conv <= 0;
-								v_count_conv <= v_count_conv + 1;
-								loader <= 0;
-								ipu_state <= 1;
-								start_buf <= 1;
-							end
-						end
-						else begin
-							h_count_conv <= h_count_conv + 1;
+				end else if (ipu_request & done_conv) begin
+
+					ipu_request <= 0;
+
+					if(h_count_conv==9'h1ff)begin
+						if (v_count_conv==9'h1df) begin
+							h_count_conv <= 0;
+							v_count_conv <= 0;
+							ipu_state <= WAIT_CONV;
+							start_buf <= 0;
+						end else begin
+							h_count_conv <= 0;
+							v_count_conv <= v_count_conv + 1;
+							ipu_state <= LOAD_BUFFER;
+							start_buf <= 1;
 						end
 					end
+					
+					else begin
+						h_count_conv <= h_count_conv + 1;
+						v_count_conv <= v_count_conv;
+						ipu_state <= SEND_CONV;
+						start_buf <= 0;
+					end
+					
 				end
 			end
+			
+			default: begin
+				ipu_state <= WAIT_CONV;
+			end
+				
 		endcase
 	
 	

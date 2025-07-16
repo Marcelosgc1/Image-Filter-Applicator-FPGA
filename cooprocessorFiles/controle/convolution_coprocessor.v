@@ -1,5 +1,6 @@
 module convolution_coprocessor(
 	////////////////////	  GENERAL	////////////////////
+	input clk,
 	input [31:0] instruction,
 	input activate_instruction, 
 	
