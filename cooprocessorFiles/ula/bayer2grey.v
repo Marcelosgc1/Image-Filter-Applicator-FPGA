@@ -34,7 +34,7 @@ module bayer2grey(
 			2'b10: begin
 				blue = v1[7:0];
 				green = v6[9:2];
-				blue = v7[9:2];
+				red = v7[9:2];
 			end
 			2'b11: begin
 				green = v1[7:0];

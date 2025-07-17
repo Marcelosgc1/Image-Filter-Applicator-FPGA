@@ -120,9 +120,10 @@ module top(
 	parameter
 					WAIT_CONV	= 2'b00,
 					LOAD_BUFFER	= 2'b01,
-					SEND_CONV 	= 2'b10;
+					SEND_CONV 	= 2'b10,
+					STB_DELAY 	= 2'b11;
 	
-	reg write_vga, start_process, ipu_request, start_buf;
+	reg write_vga, start_process, ipu_request, start_buf, next_matrix;
 	reg [1:0]ipu_state;
 	reg [2:0]loader, instruction_code;
 	reg [7:0]pixel_color;
@@ -168,9 +169,11 @@ module top(
 				h_count_conv <= 0;
 				v_count_conv <= 0;
 				ipu_request <= 0;
+				next_matrix <= 0;
 			end
 			
 			LOAD_BUFFER: begin
+				next_matrix <= 0;
 				if (!start_buf) begin
 					start_buf <= 1;
 					loader <= size + 1;
@@ -204,21 +207,20 @@ module top(
 				if (!wait_signal) begin
 					ipu_request <= 1;
 					ipu_inst <= {v_count_conv,h_count_conv,current_opcode};
+					next_matrix <= 0;
 				end else if (ipu_request & done_conv) begin
-
 					ipu_request <= 0;
-
+					next_matrix <= 1;
+					start_buf <= 0;
 					if(h_count_conv==9'h1ff)begin
 						if (v_count_conv==9'h1df) begin
 							h_count_conv <= 0;
 							v_count_conv <= 0;
 							ipu_state <= WAIT_CONV;
-							start_buf <= 0;
 						end else begin
 							h_count_conv <= 0;
 							v_count_conv <= v_count_conv + 1;
-							ipu_state <= LOAD_BUFFER;
-							start_buf <= 1;
+							ipu_state <= STB_DELAY;
 						end
 					end
 					
@@ -228,8 +230,14 @@ module top(
 						ipu_state <= SEND_CONV;
 						start_buf <= 0;
 					end
-					
+				end else begin
+					next_matrix <= 0;
 				end
+			end
+			
+			STB_DELAY: begin
+				start_buf <= 1;
+				next_matrix <= 0;
 			end
 			
 			default: begin
@@ -305,7 +313,8 @@ module top(
 		start_buf,
 		size,
 		clk,
-		buf_matrix
+		buf_matrix,
+		next_matrix
 	);
 	
 

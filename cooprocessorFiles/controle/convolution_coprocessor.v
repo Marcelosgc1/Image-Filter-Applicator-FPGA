@@ -11,7 +11,7 @@ module convolution_coprocessor(
 	////////////////////	IPU RELATED	////////////////////
 	input ipu_request,
 	input [199:0] external_matrix_A,	external_matrix_B,
-	output done_conv,
+	output done,
 	output [31:0] matrix_C, fetched_instruction_ipu,
 	output [3:0] opcode
 	
@@ -47,7 +47,7 @@ module convolution_coprocessor(
 	wire [15:0] decoded_data, result_ula;
 	wire [7:0] address_instruction, grey_result;
 	
-	wire start_conv, start_grey;
+	wire start_conv, start_grey, done_conv;
 	
 	
 	
