@@ -2,7 +2,7 @@ module top(
 	input [31:0] instruction,
 	input [1:0] activate_signal,
 	input clk,
-	input [3:0] key,
+	input [6:0] key,
 	input [9:0] sw,
 	//output
 	output [31:0] data_read,
@@ -42,6 +42,8 @@ module top(
 					CONV = 4'b0101, 	//conv. 1 matriz
 					CONV_TRSP = 4'b0110,	//conv. 2 matriz transposta
 					CONV_ROB = 4'b0111,	//conv. 2 matriz 45 graus
+					B2G = 4'b1000,
+					CONVERT_GREY = 4'b1100,
 					PHOTO_CONV = 4'b1110,
 					READ_IMAGE = 4'b1111;
 					
@@ -80,9 +82,8 @@ module top(
 	
 	assign operandA = buf_matrix;
 
-	assign operandB = {8'h00,8'h00,8'h00,8'h00,8'h00,
-							 8'h00,8'h00,8'h00,8'hFF,8'h00,
-							 8'h00,8'h00,8'h00,8'h00,8'h01};
+	assign operandB = kernel;
+  
   /*
 	* IPU
 	* IPU
@@ -95,6 +96,25 @@ module top(
 	* IPU
 	* IPU
 	*/
+	
+	
+	/*
+	
+	MASCARAS (chaves):
+		000 -> ROBERTS
+		001 -> SOBEL
+		001 -> SOBEL
+		001 -> SOBEL EXP.
+		001 -> LAPLACE
+	
+	*/
+	
+	decode_ipu(
+		instruction_code,
+		size,
+		current_opcode,
+		kernel
+	);
 
 	
 	parameter
@@ -103,15 +123,17 @@ module top(
 					SEND_CONV 	= 2'b10;
 	
 	reg write_vga, start_process, ipu_request, start_buf;
-	reg [1:0]size, ipu_state;
-	reg [2:0]loader;
+	reg [1:0]ipu_state;
+	reg [2:0]loader, instruction_code;
 	reg [7:0]pixel_color;
 	reg [8:0]h_count_conv, v_count_conv, h_count_buf, v_count_buf;
 	reg [31:0] ipu_inst;
-	wire [199:0] buf_matrix;
+	wire [199:0] buf_matrix, kernel;
 	wire [31:0] cam_data, conv_data, ram_data_out, data_in;						
 	wire [15:0] cam_address, conv_address, addr, hps_image_address, address_buf;
 	wire [8:0]h_count, v_count;
+	wire [3:0]current_opcode;
+	wire [1:0]size;
 	wire cam_valid_pixel, cam_clock, cam_we, conv_we, memory_clk;
 	
 	assign address_buf = {v_count_buf, h_count_buf[8:2]};
@@ -124,19 +146,19 @@ module top(
 	assign h_count = ipu_state==LOAD_BUFFER ? h_count_buf : h_count_conv;
 	assign v_count = ipu_state==LOAD_BUFFER ? v_count_buf : v_count_conv;
 	
+	assign is_grey = instruction[3:0]==CONVERT_GREY;
 	assign hps_read_image = instruction[3:0]==READ_IMAGE;
 	assign hps_image_address = instruction[19:4];
 	assign last_col = (h_count_buf == 9'd508);
 	
-	
 	always @ (posedge clk) begin
 		case (ipu_state)
 			WAIT_CONV: begin
-				if(instruction[3:0]==PHOTO_CONV & !start_process) begin
+				if((instruction[3:0]==PHOTO_CONV | instruction[3:0]==CONVERT_GREY) & !start_process) begin
 					ipu_state <= LOAD_BUFFER;
-					size <= instruction[5:4];
+					instruction_code <= (sw[6:4] == 3'b111) ? instruction[6:4] : sw[6:4];
 					start_process <= 1;
-				end else if (instruction[3:0]!=PHOTO_CONV) begin
+				end else if (instruction[3:0]!=PHOTO_CONV & instruction[3:0]!=CONVERT_GREY) begin
 					start_process <= 0;
 				end
 				start_buf <= 0;
@@ -181,7 +203,7 @@ module top(
 				
 				if (!wait_signal) begin
 					ipu_request <= 1;
-					ipu_inst <= {v_count_conv,h_count_conv,4'b0111};
+					ipu_inst <= {v_count_conv,h_count_conv,current_opcode};
 				end else if (ipu_request & done_conv) begin
 
 					ipu_request <= 0;

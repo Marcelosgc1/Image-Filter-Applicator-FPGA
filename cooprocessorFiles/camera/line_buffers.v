@@ -62,7 +62,7 @@ always @(*) begin
 						 8'b0,8'b0,num[5],num[4],num[3],
 						 8'b0,8'b0,num[2],num[1],num[0]};
 		end
-		
+		/*
 		3: begin //matriz 5x5
 			num[0] = (is_col0 & is_line0) ? centralPixel5x5 :
 						(is_col1 & is_line1) ? BUFFER3[(address[8:0] * 8) - 8 +:8] :
@@ -191,7 +191,7 @@ always @(*) begin
 						 num[9],num[8],num[7],num[6],num[5],
 						 num[4],num[3],num[2],num[1],num[0]};
 		end
-		
+		*/
 		default:
 			matrix = 0;
 	endcase

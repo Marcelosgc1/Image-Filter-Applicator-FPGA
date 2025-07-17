@@ -32,8 +32,7 @@ module convolution_coprocessor(
 					CONV = 4'b0101, 	//conv. 1 matriz
 					CONV_TRSP = 4'b0110,	//conv. 2 matriz transposta
 					CONV_ROB = 4'b0111,	//conv. 2 matriz 45 graus
-					PHOTO_CONV = 4'b1110,
-					READ_IMAGE = 4'b1111;
+					B2G = 4'b1000;
 					
 	
 	
@@ -44,10 +43,11 @@ module convolution_coprocessor(
 	
 	wire [199:0] matrix_A, operandA, matrix_B, operandB; 
 	
-	wire [23:0] matrix_result;
+	wire [23:0] convolution_result, matrix_result;
 	wire [15:0] decoded_data, result_ula;
-	wire [7:0] address_instruction;
+	wire [7:0] address_instruction, grey_result;
 	
+	wire start_conv, start_grey;
 	
 	
 	
@@ -58,20 +58,29 @@ module convolution_coprocessor(
 		decoded_data
 	);
 	
+	bayer2grey(
+		operandA,
+		{fetched_instruction[13],fetched_instruction[4]},
+		clk, 
+		start_grey,
+		grey_result, 
+		done_grey
+	);
+	
 	conv_geratriz(
 		operandA, 
 		operandB, 
 		opcode[1:0], 
 		clk, 
-		start, 
-		matrix_result, 
+		start_conv, 
+		convolution_result, 
 		done_conv
 	);
 	
 	br(
 		clk,
 		write_enable_reg,
-		done_conv,
+		done,
 		decoded_data,
 		address_instruction[5:0],
 		matrix_result,
@@ -80,6 +89,10 @@ module convolution_coprocessor(
 		matrix_C,
 		result_ula
 	);
+	
+	assign done = (done_conv | done_grey);
+	assign {start_conv, start_grey} = IS_GREY ? {1'b0,start} : {start,1'b0};
+	assign matrix_result = IS_GREY ? {grey_result,grey_result,grey_result} : convolution_result;
 	
 	assign fetched_instruction_ipu = fetched_instruction;
 	assign operandA = ipu_request ? external_matrix_A 
@@ -93,6 +106,7 @@ module convolution_coprocessor(
 	assign wait_signal = (state != FETCH);
 	assign IS_MEM_OP = (instruction[3:0] == WRITE) | (instruction[3:0] == READ);
 	assign IS_WR_OP = (opcode == WRITE);
+	assign IS_GREY = (opcode == B2G);
 	
 	always @(posedge clk) begin
 		//MEF
@@ -124,7 +138,7 @@ module convolution_coprocessor(
 			//realiza operacoes de matriz
 			EXECUTE: begin
 				//manda escrever na memoria
-				if (!done_conv) begin
+				if (!done) begin
 					start <= 1;
 				//aguarda alu terminar operacao
 				end else begin
