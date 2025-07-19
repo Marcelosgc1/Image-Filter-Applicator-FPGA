@@ -238,6 +238,7 @@ module top(
 			STB_DELAY: begin
 				start_buf <= 1;
 				next_matrix <= 0;
+				ipu_state <= LOAD_BUFFER;
 			end
 			
 			default: begin

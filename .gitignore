@@ -1,0 +1,6 @@
+*.bak
+cooprocessorFiles/db/
+cooprocessorFiles/incremental_db/
+
+cooprocessorFiles/output_files/*
+!cooprocessorFiles/output_files/soc_system.sof
