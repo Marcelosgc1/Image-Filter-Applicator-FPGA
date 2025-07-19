@@ -43,7 +43,6 @@ module top(
 					CONV_TRSP = 4'b0110,	//conv. 2 matriz transposta
 					CONV_ROB = 4'b0111,	//conv. 2 matriz 45 graus
 					B2G = 4'b1000,
-					CONVERT_GREY = 4'b1100,
 					PHOTO_CONV = 4'b1110,
 					READ_IMAGE = 4'b1111;
 					
@@ -97,18 +96,6 @@ module top(
 	* IPU
 	*/
 	
-	
-	/*
-	
-	MASCARAS (chaves):
-		000 -> ROBERTS
-		001 -> SOBEL
-		001 -> SOBEL
-		001 -> SOBEL EXP.
-		001 -> LAPLACE
-	
-	*/
-	
 	decode_ipu(
 		instruction_code,
 		size,
@@ -147,7 +134,6 @@ module top(
 	assign h_count = ipu_state==LOAD_BUFFER ? h_count_buf : h_count_conv;
 	assign v_count = ipu_state==LOAD_BUFFER ? v_count_buf : v_count_conv;
 	
-	assign is_grey = instruction[3:0]==CONVERT_GREY;
 	assign hps_read_image = instruction[3:0]==READ_IMAGE;
 	assign hps_image_address = instruction[19:4];
 	assign last_col = (h_count_buf == 9'd508);
@@ -155,11 +141,11 @@ module top(
 	always @ (posedge clk) begin
 		case (ipu_state)
 			WAIT_CONV: begin
-				if((instruction[3:0]==PHOTO_CONV | instruction[3:0]==CONVERT_GREY) & !start_process) begin
+				if((instruction[3:0]==PHOTO_CONV) & !start_process) begin
 					ipu_state <= LOAD_BUFFER;
 					instruction_code <= (sw[6:4] == 3'b111) ? instruction[6:4] : sw[6:4];
 					start_process <= 1;
-				end else if (instruction[3:0]!=PHOTO_CONV & instruction[3:0]!=CONVERT_GREY) begin
+				end else if (instruction[3:0]!=PHOTO_CONV) begin
 					start_process <= 0;
 				end
 				start_buf <= 0;

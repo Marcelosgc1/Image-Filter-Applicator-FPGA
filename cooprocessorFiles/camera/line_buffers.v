@@ -33,25 +33,25 @@ always @(*) begin
 	case (size)
 		2'd0: begin // 2x2
 			num[0] = BUFFER1[0+:8];
-			num[1] = is_lastcol     ? 0 : BUFFER1[8+:8];
-			num[2] = is_lastline    ? 0 : BUFFER0[0+:8];
-			num[3] = (is_lastcol || is_lastline) ? 0 : BUFFER0[8+:8];
+			num[1] = is_lastcol     ? 8'b0 : BUFFER1[8+:8];
+			num[2] = is_lastline    ? 8'b0 : BUFFER0[0+:8];
+			num[3] = (is_lastcol || is_lastline) ? 8'b0 : BUFFER0[8+:8];
 			matrix = {8'b0, 8'b0, 8'b0, num[3], num[2],
 						 8'b0, 8'b0, 8'b0, num[1], num[0]};
 		end
 
 		2'd1: begin // 3x3
-			num[0] = (is_line0 || is_col0)     ? 0 : BUFFER2[4088+:8];
-			num[1] = is_line0                  ? 0 : BUFFER2[0+:8];
-			num[2] = (is_line0 || is_lastcol)  ? 0 : BUFFER2[8+:8];
+			num[0] = (is_line0 || is_col0)     ? 8'b0 : BUFFER2[4088+:8];
+			num[1] = is_line0                  ? 8'b0 : BUFFER2[0+:8];
+			num[2] = (is_line0 || is_lastcol)  ? 8'b0 : BUFFER2[8+:8];
 
-			num[3] = is_col0                   ? 0 : BUFFER1[4088+:8];
+			num[3] = is_col0                   ? 8'b0 : BUFFER1[4088+:8];
 			num[4] = centralPixel3x3;
-			num[5] = is_lastcol                ? 0 : BUFFER1[8+:8];
+			num[5] = is_lastcol                ? 8'b0 : BUFFER1[8+:8];
 
-			num[6] = (is_lastline || is_col0)     ? 0 : BUFFER0[4088+:8];
-			num[7] = is_lastline                  ? 0 : BUFFER0[0+:8];
-			num[8] = (is_lastline || is_lastcol)  ? 0 : BUFFER0[8+:8];
+			num[6] = (is_lastline || is_col0)     ? 8'b0 : BUFFER0[4088+:8];
+			num[7] = is_lastline                  ? 8'b0 : BUFFER0[0+:8];
+			num[8] = (is_lastline || is_lastcol)  ? 8'b0 : BUFFER0[8+:8];
 
 			matrix = {8'b0, 8'b0, num[8], num[7], num[6],
 						 8'b0, 8'b0, num[5], num[4], num[3],
@@ -59,39 +59,39 @@ always @(*) begin
 		end
 
 		2'd3: begin // 5x5
-			num[0]  = (is_col1 || is_col0 || is_line1 || is_line0) ? 0 : BUFFER4[4080+:8];
-			num[1]  = (is_col0 || is_line1 || is_line0) ? 0 : BUFFER4[4088+:8];
-			num[2]  = (is_line1 || is_line0) ? 0 : BUFFER4[0+:8];
-			num[3]  = (is_lastcol || is_line1 || is_line0) ? 0 : BUFFER4[8+:8];
-			num[4]  = (is_prelastcol || is_lastcol || is_line1 || is_line0) ? 0 : BUFFER4[16+:8];
+			num[0]  = (is_col1 || is_col0 || is_line1 || is_line0) ? 8'b0 : BUFFER4[4080+:8];
+			num[1]  = (is_col0 || is_line1 || is_line0) ? 8'b0 : BUFFER4[4088+:8];
+			num[2]  = (is_line1 || is_line0) ? 8'b0 : BUFFER4[0+:8];
+			num[3]  = (is_lastcol || is_line1 || is_line0) ? 8'b0 : BUFFER4[8+:8];
+			num[4]  = (is_prelastcol || is_lastcol || is_line1 || is_line0) ? 8'b0 : BUFFER4[16+:8];
 
 			
-			num[5]  = (is_col1 || is_col0 || is_line0) ? 0 : BUFFER3[4080+:8];
-			num[6]  = (is_col0 || is_line0) ? 0 : BUFFER3[4088+:8];
-			num[7]  = is_line0 ? 0 : BUFFER3[0+:8];
-			num[8]  = (is_lastcol || is_line0) ? 0 : BUFFER3[8+:8];
-			num[9]  = (is_prelastcol || is_lastcol || is_line0) ? 0 : BUFFER3[16+:8];
+			num[5]  = (is_col1 || is_col0 || is_line0) ? 8'b0 : BUFFER3[4080+:8];
+			num[6]  = (is_col0 || is_line0) ? 8'b0 : BUFFER3[4088+:8];
+			num[7]  = is_line0 ? 8'b0 : BUFFER3[0+:8];
+			num[8]  = (is_lastcol || is_line0) ? 8'b0 : BUFFER3[8+:8];
+			num[9]  = (is_prelastcol || is_lastcol || is_line0) ? 8'b0 : BUFFER3[16+:8];
 
 			
-			num[10] = (is_col1 || is_col0) ? 0 : BUFFER2[4080+:8];
-			num[11] = is_col0 ? 0 : BUFFER2[4088+:8];
+			num[10] = (is_col1 || is_col0) ? 8'b0 : BUFFER2[4080+:8];
+			num[11] = is_col0 ? 8'b0 : BUFFER2[4088+:8];
 			num[12] = centralPixel5x5;
-			num[13] = is_lastcol ? 0 : BUFFER2[8+:8];
-			num[14] = (is_prelastcol || is_lastcol) ? 0 : BUFFER2[16+:8];
+			num[13] = is_lastcol ? 8'b0 : BUFFER2[8+:8];
+			num[14] = (is_prelastcol || is_lastcol) ? 8'b0 : BUFFER2[16+:8];
 
 			
-			num[15] = (is_col1 || is_col0 || is_lastline) ? 0 : BUFFER1[4080+:8];
-			num[16] = (is_col0 || is_lastline) ? 0 : BUFFER1[4088+:8];
-			num[17] = is_lastline ? 0 : BUFFER1[0+:8];
-			num[18] = (is_lastcol || is_lastline) ? 0 : BUFFER1[8+:8];
-			num[19] = (is_prelastcol || is_lastcol || is_lastline) ? 0 : BUFFER1[16+:8];
+			num[15] = (is_col1 || is_col0 || is_lastline) ? 8'b0 : BUFFER1[4080+:8];
+			num[16] = (is_col0 || is_lastline) ? 8'b0 : BUFFER1[4088+:8];
+			num[17] = is_lastline ? 8'b0 : BUFFER1[0+:8];
+			num[18] = (is_lastcol || is_lastline) ? 8'b0 : BUFFER1[8+:8];
+			num[19] = (is_prelastcol || is_lastcol || is_lastline) ? 8'b0 : BUFFER1[16+:8];
 
 			
-			num[20] = (is_col1 || is_col0 || is_lastline || is_prelastline) ? 0 : BUFFER0[4080+:8];
-			num[21] = (is_col0 || is_lastline || is_prelastline) ? 0 : BUFFER0[4088+:8];
-			num[22] = (is_lastline || is_prelastline) ? 0 : BUFFER0[0+:8];
-			num[23] = (is_lastcol || is_lastline || is_prelastline) ? 0 : BUFFER0[8+:8];
-			num[24] = (is_prelastcol || is_lastcol || is_lastline || is_prelastline) ? 0 : BUFFER0[16+:8];
+			num[20] = (is_col1 || is_col0 || is_lastline || is_prelastline) ? 8'b0 : BUFFER0[4080+:8];
+			num[21] = (is_col0 || is_lastline || is_prelastline) ? 8'b0 : BUFFER0[4088+:8];
+			num[22] = (is_lastline || is_prelastline) ? 8'b0 : BUFFER0[0+:8];
+			num[23] = (is_lastcol || is_lastline || is_prelastline) ? 8'b0 : BUFFER0[8+:8];
+			num[24] = (is_prelastcol || is_lastcol || is_lastline || is_prelastline) ? 8'b0 : BUFFER0[16+:8];
 		
 		
 			matrix = {num[24], num[23], num[22], num[21], num[20],
