@@ -28,6 +28,7 @@ module top(
 );
 	
 
+
 	parameter 	//STATES
 					FETCH = 3'b000,
 					DECODE = 3'b001,
@@ -81,71 +82,10 @@ module top(
 	
 	assign operandA = buf_matrix;
 
-<<<<<<< HEAD
+
 	assign operandB = kernel;
   
-=======
-	assign operandB = ipu_request ? {8'h00,8'h00,8'h00,8'h00,8'h00,
-												8'h00,8'h00,8'h00,8'hFF,8'h00,
-												8'h00,8'h00,8'h00,8'h00,8'h01}
-											: matrix_B;
-	
-	//ALIAS
-	assign wait_signal = (state != FETCH);
-	assign IS_MEM_OP = (instruction[3:0] == WRITE) | (instruction[3:0] == READ);
-	assign IS_WR_OP = (opcode == WRITE);
-	
-	always @(posedge clk) begin
-		//MEF
-		case (state)
-			//Estado de busca
-			FETCH: begin
-				//quando recebe activate_instruction, muda de estado
-				if (ipu_request) begin	
-					fetched_instruction <= ipu_inst;
-					state <= EXECUTE;
-				end else if (activate_instruction) begin
-					fetched_instruction <= instruction;
-					state <= IS_MEM_OP ? MEMORY : EXECUTE;
-				end else begin
-					state <= FETCH;
-				end
-				
-				//RESTART SIGNALS
-				write_enable_reg <= 0;
-				start <= 0;
-			end
-			
-			
-			//Estado para operacoes de memoria
-			MEMORY: begin
-				//operacao explicita de memoria
-				write_enable_reg <= IS_WR_OP;
-				output_reg <= result_ula;
-				state <= FETCH;
-			end
-			
-			//realiza operacoes de matriz
-			EXECUTE: begin
-				//manda escrever na memoria
-				if (!done_conv) begin
-					start <= 1;
-				//aguarda alu terminar operacao
-				end else begin
-					start <= 0;
-					state <= FETCH;
-				end
-			end
-			
-			default: state <= FETCH;
-			
-		endcase
-	end
-
-	
-	
->>>>>>> main
-  /*
+/*
 	* IPU
 	* IPU
 	* IPU
