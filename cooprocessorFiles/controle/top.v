@@ -100,6 +100,7 @@ module top(
 		instruction_code,
 		size,
 		current_opcode,
+		initial_vertical_buffer,
 		kernel
 	);
 
@@ -119,7 +120,7 @@ module top(
 	wire [199:0] buf_matrix, kernel;
 	wire [31:0] cam_data, conv_data, ram_data_out, data_in;						
 	wire [15:0] cam_address, conv_address, addr, hps_image_address, address_buf;
-	wire [8:0]h_count, v_count;
+	wire [8:0]h_count, v_count, initial_vertical_buffer;
 	wire [3:0]current_opcode;
 	wire [1:0]size;
 	wire cam_valid_pixel, cam_clock, cam_we, conv_we, memory_clk;
@@ -163,10 +164,11 @@ module top(
 				if (!start_buf) begin
 					start_buf <= 1;
 					loader <= size + 1;
+					v_count_buf <= initial_vertical_buffer;
 				end else begin
 					if (last_col) begin
 						h_count_buf <= 0;
-						v_count_buf <= v_count_buf + 1;
+						v_count_buf <= (v_count_buf==9'h1df) ? 9'h0 : v_count_buf + 1;
 						if (loader == 0) begin
 							ipu_state <= SEND_CONV;
 							start_buf <= 0;
