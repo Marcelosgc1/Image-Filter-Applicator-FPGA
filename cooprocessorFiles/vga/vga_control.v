@@ -30,11 +30,11 @@ wire [7:0] pixel_color;
 
 assign offset = write_result ? address[1:0] : sw_debug[0] ? x[1:0] : y[1:0];
 assign addr = write_result ? address[17:2] : sw_debug[0] ? {y[8:0],x[8:2]} : {x[8:0],y[8:2]};
-assign pixel_color = (x[9]||y[9]) ? 0 : color;
+assign pixel_color = (x[9]||y[9]) ? 8'h0 : color;
 
 	 
 	 
-vga_driver(
+vga_driver vga_main_driver(
 	MHz25,
 	0,
 	pixel_color, 
@@ -111,7 +111,7 @@ always @(posedge clk) begin
             4: begin
                 WRITE_ENABLE <= 0;
                 done <= 1;
-                count <= 0;
+                count <= 4;
             end
         endcase
     end

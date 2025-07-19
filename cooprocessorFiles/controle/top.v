@@ -2,7 +2,7 @@ module top(
 	input [31:0] instruction,
 	input [1:0] activate_signal,
 	input clk,
-	input [3:0] key,
+	input [6:0] key,
 	input [9:0] sw,
 	//output
 	output [31:0] data_read,
@@ -28,6 +28,7 @@ module top(
 );
 	
 
+
 	parameter 	//STATES
 					FETCH = 3'b000,
 					DECODE = 3'b001,
@@ -42,126 +43,49 @@ module top(
 					CONV = 4'b0101, 	//conv. 1 matriz
 					CONV_TRSP = 4'b0110,	//conv. 2 matriz transposta
 					CONV_ROB = 4'b0111,	//conv. 2 matriz 45 graus
+					B2G = 4'b1000,
 					PHOTO_CONV = 4'b1110,
 					READ_IMAGE = 4'b1111;
 					
-	assign data_read = hps_read_image ? ram_data_out : output_reg;
-	
-	reg [2:0] state = FETCH;
-	reg [31:0] fetched_instruction = 0;
-	
-	reg start; 
+	assign data_read = hps_read_image ? ram_data_out : coprocessor_data;
+	 
 	wire done_conv, activate_instruction, activate_ipu;
 	
 	assign activate_instruction = activate_signal[0];
 	assign activate_ipu = activate_signal[0];
 	
-	wire [199:0] matrix_A, operandA, matrix_B, operandB; 
-	wire [31:0] matrix_C;
-	wire [23:0] matrix_result;
-	wire [15:0] decoded_data, result_ula;
-	wire [7:0] address_instruction;
+	wire [199:0] operandA, operandB; 
+	wire [31:0] matrix_C, sent_instruction, fetched_instruction;
+	wire [15:0] coprocessor_data;
 	wire [3:0] opcode;
 	
-	
-	//NEW STUFF HERE:
-	reg write_enable_reg;
-	reg [15:0] output_reg;
+	assign sent_instruction = ipu_request ? ipu_inst : instruction;
 	
 	
-	decoder(
-		fetched_instruction,
-		opcode,
-		address_instruction,
-		decoded_data
-	);
-	
-	conv_geratriz(
-		operandA, 
-		operandB, 
-		opcode[1:0], 
-		clk, 
-		start, 
-		matrix_result, 
-		done_conv
-	);
-	
-	br(
+	convolution_coprocessor new_coprocessor(
 		clk,
-		write_enable_reg,
+		sent_instruction,
+		(activate_instruction | ipu_request), 
+		coprocessor_data,
+		wait_signal,
+		ipu_request,
+		operandA, 
+		operandB,
 		done_conv,
-		decoded_data,
-		address_instruction[5:0],
-		matrix_result,
-		matrix_A,
-		matrix_B,
-		matrix_C,
-		result_ula
-	);
+		matrix_C, 
+		fetched_instruction,
+		opcode
+);
 	
-	assign operandA = ipu_request ? buf_matrix 
-											: matrix_A;
+	
+	
+	
+	assign operandA = buf_matrix;
 
-	assign operandB = ipu_request ? {8'h00,8'h00,8'h00,8'h00,8'h00,
-												8'h00,8'h00,8'h00,8'hFF,8'h00,
-												8'h00,8'h00,8'h00,8'h00,8'h01}
-											: matrix_B;
-	
-	//ALIAS
-	assign wait_signal = (state != FETCH);
-	assign IS_MEM_OP = (instruction[3:0] == WRITE) | (instruction[3:0] == READ);
-	assign IS_WR_OP = (opcode == WRITE);
-	
-	always @(posedge clk) begin
-		//MEF
-		case (state)
-			//Estado de busca
-			FETCH: begin
-				//quando recebe activate_instruction, muda de estado
-				if (ipu_request) begin	
-					fetched_instruction <= ipu_inst;
-					state <= EXECUTE;
-				end else if (activate_instruction) begin
-					fetched_instruction <= instruction;
-					state <= IS_MEM_OP ? MEMORY : EXECUTE;
-				end else begin
-					state <= FETCH;
-				end
-				
-				//RESTART SIGNALS
-				write_enable_reg <= 0;
-				start <= 0;
-			end
-			
-			
-			//Estado para operacoes de memoria
-			MEMORY: begin
-				//operacao explicita de memoria
-				write_enable_reg <= IS_WR_OP;
-				output_reg <= result_ula;
-				state <= FETCH;
-			end
-			
-			//realiza operacoes de matriz
-			EXECUTE: begin
-				//manda escrever na memoria
-				if (!done_conv) begin
-					start <= 1;
-				//aguarda alu terminar operacao
-				end else begin
-					start <= 0;
-					state <= FETCH;
-				end
-			end
-			
-			default: state <= FETCH;
-			
-		endcase
-	end
 
-	
-	
-  /*
+	assign operandB = kernel;
+  
+/*
 	* IPU
 	* IPU
 	* IPU
@@ -173,24 +97,34 @@ module top(
 	* IPU
 	* IPU
 	*/
+	
+	decode_ipu ipu_signals(
+		instruction_code,
+		size,
+		current_opcode,
+		initial_vertical_buffer,
+		kernel
+	);
 
 	
 	parameter
 					WAIT_CONV	= 2'b00,
 					LOAD_BUFFER	= 2'b01,
-					SEND_CONV 	= 2'b00;
+					SEND_CONV 	= 2'b10,
+					STB_DELAY 	= 2'b11;
 	
-	assign convolution_opcode = (opcode==CONV || opcode==CONV_TRSP || opcode==CONV_ROB);
-	reg write_vga, select_cam, curr_result, start_process, ipu_request, start_buf;
-	reg [1:0]size, ipu_state;
-	reg [2:0]loader;
+	reg write_vga, start_process, ipu_request, start_buf, next_matrix;
+	reg [1:0]ipu_state;
+	reg [2:0]loader, instruction_code;
 	reg [7:0]pixel_color;
 	reg [8:0]h_count_conv, v_count_conv, h_count_buf, v_count_buf;
 	reg [31:0] ipu_inst;
-	wire [199:0] buf_matrix;
+	wire [199:0] buf_matrix, kernel;
 	wire [31:0] cam_data, conv_data, ram_data_out, data_in;						
 	wire [15:0] cam_address, conv_address, addr, hps_image_address, address_buf;
-	wire [8:0]h_count, v_count;
+	wire [8:0]h_count, v_count, initial_vertical_buffer;
+	wire [3:0]current_opcode;
+	wire [1:0]size;
 	wire cam_valid_pixel, cam_clock, cam_we, conv_we, memory_clk;
 	
 	assign address_buf = {v_count_buf, h_count_buf[8:2]};
@@ -198,21 +132,21 @@ module top(
 	assign addr = start_buf ? address_buf : hps_read_image ? hps_image_address : cam_we | cam_valid_pixel ? cam_address : conv_address;
 	assign memory_clk = cam_we | cam_valid_pixel ? cam_clock : clk;
 	assign data_in = cam_we | cam_valid_pixel ? cam_data : conv_data;
-	//assign ipu_request = instruction[3:0]==RENDERIZAR & activate_ipu;
-	assign h_count = ipu_state==1 ? h_count_buf : h_count_conv;
-	assign v_count = ipu_state==1 ? v_count_buf : v_count_conv;
+	
+	//LEMBRAR DE TESTAR start_buf ? .. : ..; depois
+	assign h_count = ipu_state==LOAD_BUFFER ? h_count_buf : h_count_conv;
+	assign v_count = ipu_state==LOAD_BUFFER ? v_count_buf : v_count_conv;
 	
 	assign hps_read_image = instruction[3:0]==READ_IMAGE;
 	assign hps_image_address = instruction[19:4];
 	assign last_col = (h_count_buf == 9'd508);
 	
-	
 	always @ (posedge clk) begin
 		case (ipu_state)
 			WAIT_CONV: begin
-				if(instruction[3:0]==PHOTO_CONV & !start_process) begin
+				if((instruction[3:0]==PHOTO_CONV) & !start_process) begin
 					ipu_state <= LOAD_BUFFER;
-					size <= instruction[5:4];
+					instruction_code <= (sw[6:4] == 3'b111) ? instruction[6:4] : sw[6:4];
 					start_process <= 1;
 				end else if (instruction[3:0]!=PHOTO_CONV) begin
 					start_process <= 0;
@@ -224,27 +158,30 @@ module top(
 				h_count_conv <= 0;
 				v_count_conv <= 0;
 				ipu_request <= 0;
-				curr_result <= 0;
+				next_matrix <= 0;
 			end
 			
 			LOAD_BUFFER: begin
+				next_matrix <= 0;
 				if (!start_buf) begin
 					start_buf <= 1;
 					loader <= size + 1;
+					v_count_buf <= initial_vertical_buffer;
 				end else begin
 					if (last_col) begin
 						h_count_buf <= 0;
-						v_count_buf <= v_count_buf + 1;
+						v_count_buf <= (v_count_buf==9'h1df) ? 9'h0 : v_count_buf + 1;
 						if (loader == 0) begin
 							ipu_state <= SEND_CONV;
 							start_buf <= 0;
+							loader <= loader;
 						end else begin
 							ipu_state <= LOAD_BUFFER;
 							start_buf <= 1;
 							loader <= loader - 1;
 						end
 					end else begin
-						loader <= 0;
+						loader <= loader;
 						h_count_buf <= h_count_buf + 4;
 						v_count_buf <= v_count_buf;
 						start_buf <= 1;
@@ -255,40 +192,55 @@ module top(
 			end
 			
 			SEND_CONV: begin
+				loader <= 0;
+				
 				if (!wait_signal) begin
 					ipu_request <= 1;
-					ipu_inst <= {v_count_conv,h_count_conv,4'b0111};
-					curr_result <= 0;
-				end else if (ipu_request) begin
-					if (done_conv & !curr_result) begin
-						curr_result <= 1;
-						ipu_request <= 0;
-						if(h_count_conv==9'h1ff)begin
-							if (v_count_conv==9'h1df) begin
-								ipu_state <= 0;
-							end else begin
-								h_count_conv <= 0;
-								v_count_conv <= v_count_conv + 1;
-								loader <= 0;
-								ipu_state <= 1;
-								start_buf <= 1;
-							end
-						end
-						else begin
-							h_count_conv <= h_count_conv + 1;
+					ipu_inst <= {v_count_conv,h_count_conv,current_opcode};
+					next_matrix <= 0;
+				end else if (ipu_request & done_conv) begin
+					ipu_request <= 0;
+					next_matrix <= 1;
+					start_buf <= 0;
+					if(h_count_conv==9'h1ff)begin
+						if (v_count_conv==9'h1df) begin
+							h_count_conv <= 0;
+							v_count_conv <= 0;
+							ipu_state <= WAIT_CONV;
+						end else begin
+							h_count_conv <= 0;
+							v_count_conv <= v_count_conv + 1;
+							ipu_state <= STB_DELAY;
 						end
 					end
-				
+					
+					else begin
+						h_count_conv <= h_count_conv + 1;
+						v_count_conv <= v_count_conv;
+						ipu_state <= SEND_CONV;
+						start_buf <= 0;
+					end
+				end else begin
+					next_matrix <= 0;
 				end
-			
 			end
-		
+			
+			STB_DELAY: begin
+				start_buf <= 1;
+				next_matrix <= 0;
+				ipu_state <= LOAD_BUFFER;
+			end
+			
+			default: begin
+				ipu_state <= WAIT_CONV;
+			end
+				
 		endcase
 	
 	
 		
 		
-		if (convolution_opcode & done_conv & !write_vga) begin
+		if (done_conv & !write_vga) begin
 			pixel_color <= (opcode==CONV) ? (matrix_C[7:0]) : (matrix_C[23:16]);
 			write_vga <= 1;
 		end
@@ -297,7 +249,7 @@ module top(
 		end
 	end
 	
-	DE2_D5M(
+	DE2_D5M camera_interface(
 		clk,
 		key,
 		sw,
@@ -314,11 +266,11 @@ module top(
 	
 
 	
-	vga_control(
+	vga_control vga_control_instance(
 		sw[3:2],
 		fetched_instruction[21:4], 
 		clk,
-		write_vga,
+		(write_vga | done_conv),
 		pixel_color,
 		ram_data_out,
 		vga_ram_done,
@@ -336,7 +288,7 @@ module top(
 );
 
 
-	vgaMemory (  
+	vgaMemory main_memory(  
 		addr,
 		memory_clk,
 		data_in,
@@ -345,13 +297,13 @@ module top(
 	);
 	
 	
-	line_buffers(
-		ram_data_out, 
-		h_count, 
-		v_count,
-		start_buf,
-		size,
+	line_buffers temporary_memory(
 		clk,
+		ram_data_out, 
+		h_count,
+		start_buf,
+		next_matrix,
+		size,
 		buf_matrix
 	);
 	
