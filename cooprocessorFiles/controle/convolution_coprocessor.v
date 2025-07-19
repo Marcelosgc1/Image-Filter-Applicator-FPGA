@@ -51,14 +51,14 @@ module convolution_coprocessor(
 	
 	
 	
-	decoder(
+	decoder cop_decoder(
 		fetched_instruction,
 		opcode,
 		address_instruction,
 		decoded_data
 	);
 	
-	bayer2grey(
+	bayer2grey b2g(
 		operandA,
 		{fetched_instruction[13],fetched_instruction[4]},
 		clk, 
@@ -67,7 +67,7 @@ module convolution_coprocessor(
 		done_grey
 	);
 	
-	conv_geratriz(
+	conv_geratriz convolution(
 		operandA, 
 		operandB, 
 		opcode[1:0], 
@@ -77,7 +77,7 @@ module convolution_coprocessor(
 		done_conv
 	);
 	
-	br(
+	br bank_register(
 		clk,
 		write_enable_reg,
 		done,

@@ -15,7 +15,7 @@ wire [199:0] matriz_c, matriz_d, aux_kernel;
 wire [7:0]   absSum, modulo1, modulo2, result1;
 
 //LOGICA DO SEGUNDO KERNEL
-matriz_transposta(matriz_b, matriz_c);
+matriz_transposta trp_kernel(matriz_b, matriz_c);
 assign matriz_d = {matriz_b[8+:8],matriz_b[48+:8],ZERO,ZERO,ZERO,matriz_b[0+:8],matriz_b[40+:8]};
 assign aux_kernel = seletor[0] ? matriz_d : matriz_c;
 

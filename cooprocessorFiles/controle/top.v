@@ -61,7 +61,7 @@ module top(
 	assign sent_instruction = ipu_request ? ipu_inst : instruction;
 	
 	
-	convolution_coprocessor(
+	convolution_coprocessor new_coprocessor(
 		clk,
 		sent_instruction,
 		(activate_instruction | ipu_request), 
@@ -96,7 +96,7 @@ module top(
 	* IPU
 	*/
 	
-	decode_ipu(
+	decode_ipu ipu_signals(
 		instruction_code,
 		size,
 		current_opcode,
@@ -245,7 +245,7 @@ module top(
 		end
 	end
 	
-	DE2_D5M(
+	DE2_D5M camera_interface(
 		clk,
 		key,
 		sw,
@@ -262,7 +262,7 @@ module top(
 	
 
 	
-	vga_control(
+	vga_control vga_control_instance(
 		sw[3:2],
 		fetched_instruction[21:4], 
 		clk,
@@ -284,7 +284,7 @@ module top(
 );
 
 
-	vgaMemory (  
+	vgaMemory main_memory(  
 		addr,
 		memory_clk,
 		data_in,
@@ -293,15 +293,14 @@ module top(
 	);
 	
 	
-	line_buffers(
-		ram_data_out, 
-		h_count, 
-		v_count,
-		start_buf,
-		size,
+	line_buffers temporary_memory(
 		clk,
-		buf_matrix,
-		next_matrix
+		ram_data_out, 
+		h_count,
+		start_buf,
+		next_matrix,
+		size,
+		buf_matrix
 	);
 	
 

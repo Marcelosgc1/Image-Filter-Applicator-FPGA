@@ -34,7 +34,7 @@ assign pixel_color = (x[9]||y[9]) ? 0 : color;
 
 	 
 	 
-vga_driver(
+vga_driver vga_main_driver(
 	MHz25,
 	0,
 	pixel_color, 
