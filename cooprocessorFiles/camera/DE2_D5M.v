@@ -263,16 +263,36 @@ assign DATA0 = memoryDataOut[31:0];
 
 
 
+wire [199:0] matrix;
+
+line_buffers(
+	CCD_PIXCLK,
+	pixelData,
+	2'd1,
+	buffer_instruction,
+	matrix
+);
+
+reg [1:0]buffer_instruction;
+reg idle;
+
+always @(*) begin
+	idle = !validPixel || X_Cont[9];
+	casez ({idle, Y_Cont!=0, X_Cont!=0})
+
+		3'b1??: buffer_instruction = 2'b00;
+		3'b000: buffer_instruction = 2'b01;
+		3'b001: buffer_instruction = 2'b10;
+		3'b010: buffer_instruction = 2'b11;
+		3'b011: buffer_instruction = 2'b10;
+
+		default: buffer_instruction = 2'b00;
+	
+	endcase
+end
 
 
 
-//vgaMemory cameraMemory(
-//	muxAddress,
-//	CCD_PIXCLK,
-//	memoryData,
-//	writeEnable,
-//	memoryDataOut
-//);	
 
 
 always @(posedge CCD_PIXCLK) begin
@@ -293,8 +313,8 @@ always @(posedge CCD_PIXCLK) begin
 			3: begin
 				memoryData[cameraOffset*8 +: 8] <= pixelData;
 				memoryData[23:0] <= pixelBuffer[23:0];
-				fullBuffer <= 1;	
-				tempAddress <= cameraAddress;				
+				fullBuffer <= 1;
+				tempAddress <= cameraAddress;
 			end
 			
 			default: begin

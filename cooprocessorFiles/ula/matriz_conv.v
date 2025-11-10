@@ -1,82 +1,75 @@
 module matriz_conv (
-  input [199:0] matriz_a,
-  input signed [199:0] matriz_b,
-  input clk,
-  input start,
-  output [7:0] result, 
-  output signal,
-  output reg done
+	input [199:0] matriz_a,
+	input signed [199:0] matriz_b,
+	input [18:0] data,
+	input clk,
+	output [7:0] result, 
+	output signal,
+	output reg [18:0] s6_data
 );
 	
-  reg signed [15:0] mult [0:24];
-  reg signed [16:0] stage1 [0:12];
-  reg signed [17:0] stage2 [0:6];
-  reg signed [18:0] stage3 [0:3];
-  reg signed [19:0] stage4 [0:1];
-  reg signed [20:0] final_sum;
+	reg signed [15:0] mult [0:24];
+	reg [18:0] mult_data;
+
+	reg signed [16:0] stage1 [0:12];
+	reg [18:0] s1_data;
+
+	reg signed [17:0] stage2 [0:6];
+	reg [18:0] s2_data;
+
+	reg signed [18:0] stage3 [0:3];
+	reg [18:0] s3_data;
+
+	reg signed [19:0] stage4 [0:1];
+	reg [18:0] s4_data;
+  
+	reg signed [20:0] stage5;
+	reg [18:0] s5_data;
+  
+	reg [21:0] stage6;
   
 
-  reg [2:0]  stage;
-  reg [20:0] modulo;
   
-  assign result = (|modulo[20:8]) ? 8'hff : modulo[7:0];
-  assign signal = final_sum[20]; 
+	assign result = (|stage6[20:8]) ? 8'hff : stage6[7:0];
+	assign signal = stage6[21];
   
-  integer i;
+	integer i;
 
-  always @(posedge clk) begin
-    if (!start) begin
-      stage <= 0;
-      done <= 0;
-    end else begin
-      case (stage)
-        0: begin
-          for (i = 0; i < 25; i = i + 1) begin
-            mult[i] <= $signed(matriz_b[i*8 +: 8]) * matriz_a[i*8 +: 8];
-          end
-          stage <= 1;
-          done <= 0;
-        end
+	always @(posedge clk) begin
 
-        1: begin
-          for (i = 0; i < 12; i = i + 1)
-            stage1[i] <= mult[2*i] + mult[2*i+1];
-          stage1[12] <= mult[24]; 
-          stage <= 2;
-        end
+		for (i = 0; i < 25; i = i + 1) begin
+			mult[i] <= $signed(matriz_b[i*8 +: 8]) * matriz_a[i*8 +: 8];
+		end
 
-        2: begin
-          for (i = 0; i < 6; i = i + 1)
-            stage2[i] <= stage1[2*i] + stage1[2*i+1];
-          stage2[6] <= stage1[12];
-          stage <= 3;
-        end
+		for (i = 0; i < 12; i = i + 1)
+			stage1[i] <= mult[2*i] + mult[2*i+1];
+		stage1[12] <= mult[24]; 
 
-        3: begin
-          for (i = 0; i < 3; i = i + 1)
-				stage3[i] <= stage2[2*i] + stage2[2*i+1];
-				stage3[3] <= stage2[6];
-          stage <= 4;
-        end
+		for (i = 0; i < 6; i = i + 1)
+			stage2[i] <= stage1[2*i] + stage1[2*i+1];
+		stage2[6] <= stage1[12];
 
-        4: begin
-          stage4[0] <= stage3[0] + stage3[1];
-          stage4[1] <= stage3[2] + stage3[3];
-          stage <= 5;
-        end
+		for (i = 0; i < 3; i = i + 1)
+			stage3[i] <= stage2[2*i] + stage2[2*i+1];
+		stage3[3] <= stage2[6];
 
-        5: begin
-          final_sum <= stage4[0] + stage4[1];
-          stage <= 6;
-        end
+		stage4[0] <= stage3[0] + stage3[1];
+		stage4[1] <= stage3[2] + stage3[3];
+		
+		stage5 <= stage4[0] + stage4[1];
 
-        6: begin
-          modulo <= final_sum[20] ? (~final_sum + 1'b1) : final_sum;
-          done <= 1;
-          stage <= 6;
-        end
-      endcase
-    end
-  end
+		stage6[20:0] <= stage5[20] ? (~stage5 + 1'b1) : stage5;
+		stage6[21] <= stage5[20];
+	
+		mult_data <= data;
+		s1_data <= mult_data;
+		s2_data <= s1_data;
+		s3_data <= s2_data;
+		s4_data <= s3_data;
+		s5_data <= s4_data;
+		s6_data <= s5_data;
+	
+	end
+	
 
 endmodule

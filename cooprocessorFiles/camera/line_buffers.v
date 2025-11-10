@@ -1,21 +1,10 @@
 module line_buffers(
 	input clk,
-	input [31:0] datain, 
-	input [8:0] address, 
-	input save_data,
-	input next_matrix, 
-	input new_line,
-	input [1:0] size, 
-	output reg [199:0] matrix, output [31:0] t0,t1,u0,u1,v0,v1
+	input [7:0] datain,
+	input [1:0] size, instruction,
+	output reg [199:0] matrix
 );
 
-
-assign t0 = BUFFER0[0+:32];
-assign t1 = BUFFER0[32+:32];
-assign u0 = BUFFER1[0+:32];
-assign u1 = BUFFER1[32+:32];
-assign v0 = BUFFER2[0+:32];
-assign v1 = BUFFER2[32+:32];
 
 reg [4095:0] BUFFER0, BUFFER1, BUFFER2, BUFFER3, BUFFER4;
 
@@ -28,7 +17,7 @@ always @(*) begin
 		end
 
 		2'd1: begin // 3x3
-			matrix = {8'b0, 8'b0, BUFFER0[8+:8], BUFFER0[0+:8], BUFFER0[4088+:8],
+			matrix = {8'b0, 8'b0, datain, BUFFER0[0+:8], BUFFER0[4088+:8],
 						 8'b0, 8'b0, BUFFER1[8+:8], BUFFER1[0+:8], BUFFER1[4088+:8],
 						 8'b0, 8'b0, BUFFER2[8+:8], BUFFER2[0+:8], BUFFER2[4088+:8]};
 		end
@@ -47,29 +36,40 @@ always @(*) begin
 
 end
 
-wire [2:0] instruction;
-assign instruction = {save_data,new_line,next_matrix};
-
 always @(posedge clk) begin
 
 	case (instruction) 
-		3'b100: begin
-			BUFFER0[address[8:2] * 32 +:32] <= datain;
+		2'b00: begin
+			BUFFER0 <= BUFFER0;
+			BUFFER1 <= BUFFER1;
+			BUFFER2 <= BUFFER2;
+			BUFFER3 <= BUFFER3;
+			BUFFER4 <= BUFFER4;
 		end
 	
-		3'b010: begin
-			BUFFER1 <= BUFFER0;
-			BUFFER2 <= BUFFER1;
-			BUFFER3 <= BUFFER2;
-			BUFFER4 <= BUFFER3;		
+		2'b01: begin
+			BUFFER0[7:0] <= datain;
+			BUFFER0[4095:8] <= 4088'b0;
+			BUFFER1 <= 4096'b0;
+			BUFFER2 <= 4096'b0;
+			BUFFER3 <= 4096'b0;
+			BUFFER4 <= 4096'b0;		
 		end
 		
-		3'b001: begin
-			BUFFER0 <= {BUFFER0[7:0],BUFFER0[4095:8]};
+		2'b10: begin
+			BUFFER0 <= {BUFFER0[7:0],BUFFER0[4095:16], datain};
 			BUFFER1 <= {BUFFER1[7:0],BUFFER1[4095:8]};
 			BUFFER2 <= {BUFFER2[7:0],BUFFER2[4095:8]};
 			BUFFER3 <= {BUFFER3[7:0],BUFFER3[4095:8]};
 			BUFFER4 <= {BUFFER4[7:0],BUFFER4[4095:8]};		
+		end
+		
+		2'b11: begin
+			BUFFER0 <= {4088'b0, datain};
+			BUFFER1 <= {BUFFER0[7:0],BUFFER0[4095:8]};
+			BUFFER2 <= {BUFFER1[7:0],BUFFER1[4095:8]};
+			BUFFER3 <= {BUFFER2[7:0],BUFFER2[4095:8]};
+			BUFFER4 <= {BUFFER3[7:0],BUFFER3[4095:8]};
 		end
 		
 		default: begin
