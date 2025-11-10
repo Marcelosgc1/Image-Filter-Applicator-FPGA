@@ -411,6 +411,7 @@ module top(
 	
 	
 	always @ (posedge clk) begin
+		v <= ipu_state == INIT_IPU ? 0 : ipu_state == IDLE ? v : v + 1;
 		ipu_state <= next_ipu;
 		instruction_code <= next_instruction_code;
 		start_process <= next_start;
@@ -484,22 +485,11 @@ module top(
 		next_matrix,
 		next_line,
 		size,
-		buf_matrix, t0,t1,u0,u1,v0,v1
+		buf_matrix
 	);
-	reg [31:0]v;
-	wire [31:0]t0,t1,u0,u1,v0,v1;
-	always @(*)begin
-		case(sw[9:7])
-			0: v = t1;
-			1: v = t0;
-			2: v = u1;
-			3: v = u0;
-			4: v = v1;
-			5: v = v0;
-			default v = t0;
-		endcase
-	end
-	SEG7_LUT_8(h0,h1,h2,h3,h4,h5,v);
+	
+	reg [35:0]v;
+	SEG7_LUT_8(h0,h1,h2,h3,h4,h5,v[35:4]);
 	
 
 endmodule
