@@ -76,7 +76,7 @@ module bayer2grey(
 		wBlue2 <= wBlue;
 		
 		//Parte 5
-		finalSum <= partial + wBlue;
+		finalSum <= partial + wBlue2;
 		
 		
 		
