@@ -155,7 +155,7 @@ module top(
 	reg [3:0] next_ipu;
 	reg [8:0] next_H_buffer, next_V_buffer, next_H_CONVOLUTION, next_V_CONVOLUTION;
 	reg [3:0] next_loader;
-	always @(*) begin
+	/*always @(*) begin
 		case(ipu_state)
 			IDLE: begin
 				//MAIN LOGIC
@@ -420,13 +420,13 @@ module top(
 		h_count_conv <= next_H_CONVOLUTION;
 		v_count_conv <= next_V_CONVOLUTION;
 	end
-
+	*/
 	
 	DE2_D5M camera_interface(
 		clk,
 		key,
 		sw,
-		,,,,,,
+		h0,h1,h2,h3,h4,h5,
 		leds,
 		GPIO_0,
 		GPIO_1,
@@ -466,7 +466,7 @@ module top(
 		vga_blank
 );
 
-
+	
 	vgaMemory main_memory(
 		addr,
 		memory_clk,
@@ -475,31 +475,16 @@ module top(
 		ram_data_out
 	);
 	
-	
-	line_buffers temporary_memory(
-		clk,
-		ram_data_out, 
-		h_count_buf,
-		save_buf,
-		next_matrix,
-		next_line,
-		size,
-		buf_matrix, t0,t1,u0,u1,v0,v1
-	);
-	reg [31:0]v;
-	wire [31:0]t0,t1,u0,u1,v0,v1;
-	always @(*)begin
-		case(sw[9:7])
-			0: v = t1;
-			1: v = t0;
-			2: v = u1;
-			3: v = u0;
-			4: v = v1;
-			5: v = v0;
-			default v = t0;
-		endcase
-	end
-	SEG7_LUT_8(h0,h1,h2,h3,h4,h5,v);
-	
+//	
+//	line_buffers temporary_memory(
+//		clk,
+//		ram_data_out, 
+//		h_count_buf,
+//		save_buf,
+//		next_matrix,
+//		next_line,
+//		size,
+//		buf_matrix, t0,t1,u0,u1,v0,v1
+//	);
 
 endmodule

@@ -62,7 +62,6 @@ module convolution_coprocessor(
 		operandA,
 		{fetched_instruction[13],fetched_instruction[4]},
 		clk, 
-		start_grey,
 		grey_result, 
 		done_grey
 	);
@@ -72,7 +71,6 @@ module convolution_coprocessor(
 		operandB, 
 		opcode[1:0], 
 		clk, 
-		start_conv, 
 		convolution_result, 
 		done_conv
 	);

@@ -1,40 +1,32 @@
 module matriz_conv (
 	input [199:0] matriz_a,
 	input signed [199:0] matriz_b,
-	input [18:0] data,
+	input [20:0] data,
 	input clk,
 	output [7:0] result, 
 	output signal,
-	output reg [18:0] s6_data
+	output reg [20:0] s6_data
 );
 	
+	reg [20:0] mult_data, s1_data, s2_data, s3_data, s4_data, s5_data;
+	
 	reg signed [15:0] mult [0:24];
-	reg [18:0] mult_data;
-
 	reg signed [16:0] stage1 [0:12];
-	reg [18:0] s1_data;
-
 	reg signed [17:0] stage2 [0:6];
-	reg [18:0] s2_data;
-
 	reg signed [18:0] stage3 [0:3];
-	reg [18:0] s3_data;
-
 	reg signed [19:0] stage4 [0:1];
-	reg [18:0] s4_data;
-  
 	reg signed [20:0] stage5;
-	reg [18:0] s5_data;
-  
 	reg [21:0] stage6;
   
-
   
 	assign result = (|stage6[20:8]) ? 8'hff : stage6[7:0];
 	assign signal = stage6[21];
   
-	integer i;
 
+ 
+
+	integer i;
+	
 	always @(posedge clk) begin
 
 		for (i = 0; i < 25; i = i + 1) begin

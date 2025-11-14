@@ -16,6 +16,7 @@ module vga_control(
 wire [9:0] x, y;
 reg [7:0] color;
 reg MHz25;
+wire [1:0] offset;
 wire [7:0] pixel_color;
 
 assign pixel_color = (x[9]||y[9]) ? 8'h0 : color;
