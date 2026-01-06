@@ -8,11 +8,12 @@ module write_result(
 	output reg done, 
 	output reg WRITE_ENABLE, 
 	output reg [31:0] data_in,
-	output wire [15:0] phy_addr
+	output wire [15:0] phy_addr,
+	output reg [3:0] byte_en_signal
 );
 
 reg [3:0]state, next_state;
-wire [1:0]offset;
+wire [1:0] offset;
 reg delay, true_done;
 
 assign offset = instruction_addr[1:0];
@@ -22,11 +23,25 @@ assign phy_addr = instruction_addr[17:2];
 always @(*) begin
 	true_done = !delay & convolution_done;
 	case (offset)
-		0: data_in = {ram_data[31:8], new_data};
-		1: data_in = {ram_data[31:16], new_data, ram_data[7:0]};
-		2: data_in = {ram_data[31:24], new_data, ram_data[15:0]};
-		3: data_in = {new_data, ram_data[23:0]};
+		0: begin
+			data_in = {24'h0, new_data};
+			byte_en_signal = 4'b0001;
+		end
+		1: begin
+			data_in = {16'h0, new_data, 8'h0};
+			byte_en_signal = 4'b0010;
+		end
+		2: begin
+			data_in = {8'h0, new_data, 16'h0};
+			byte_en_signal = 4'b0100;
+		end
+		3: begin
+			data_in = {new_data, 24'h0};
+			byte_en_signal = 4'b1000;
+		end
 	endcase
+	
+	
 	case (state) 
 		0: begin
 			if (true_done) begin
@@ -39,21 +54,15 @@ always @(*) begin
 			WRITE_ENABLE = 0;
 			done = 0;
 		end
+		
 		1: begin
 			next_state = 2;
-			WRITE_ENABLE = 0;
-			done = 0;
-			memory_acc = 1;
-		end
-		
-		2: begin
-			next_state = 3;
 			WRITE_ENABLE = 1;
 			done = 0;
 			memory_acc = 1;
 		end
 		
-		3: begin
+		2: begin
 			next_state = 0;
 			WRITE_ENABLE = 0;
 			done = 1;

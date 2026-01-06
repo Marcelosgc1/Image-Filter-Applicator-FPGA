@@ -128,7 +128,7 @@ module top(
 	wire [15:0] cam_address, addr_vga, addr, hps_image_address, address_buf, addr_conv;
 	wire [8:0]h_count, v_count, initial_vertical_buffer;
 	wire [7:0]pixel_color;
-	wire [3:0]current_opcode;
+	wire [3:0]current_opcode, byte_enable;
 	wire [1:0]size;
 	wire cam_valid_pixel, cam_clock, cam_we, conv_we, memory_clk;
 	
@@ -448,7 +448,8 @@ module top(
 		conv_write_done,
 		conv_we,
 		conv_data,
-		addr_conv
+		addr_conv,
+		byte_enable
 	);
 	
 	
@@ -467,8 +468,9 @@ module top(
 );
 
 
-	vgaMemory main_memory(
+	dataMemory main_memory(
 		addr,
+		byte_enable,
 		memory_clk,
 		data_in,
 		WRITE_ENABLE, 
