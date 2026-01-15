@@ -133,6 +133,28 @@ void imageFromFPGA(volatile int *pio_cmd, uint8_t *image){
     return;
 }
 
+void imageToFPGA(volatile int *pio_cmd, uint8_t *image){
+    volatile int *pio_instruction = pio_cmd;
+    volatile int *pio_pixel_color = pio_cmd + 8;
+    int count = 0;
+    int temp = 0, t2 = 0;
+
+    while(count < 65536){
+	    temp = (count<<4) + 13;
+        t2 = count<<2;
+        *pio_pixel_color = image[t2] | image[t2+1] << 8 | image[t2+2] << 16| image[t2+3] << 24;
+        *pio_instruction = temp;
+        
+	    
+        //printf("%x %d %d\n", beyer, count, *pio_instruction>>4); //debug
+        count = count + 1;
+        *pio_instruction = 0;
+    }
+
+    *pio_instruction = 0;
+    return;
+}
+
 void generateImage(volatile int *pio_cmd){
     uint8_t *image = malloc(512*512);
     imageFromFPGA(pio_cmd, image);
@@ -143,6 +165,16 @@ void generateImage(volatile int *pio_cmd){
     stbi_write_png("data/outputGS.png", 512, 512, 1, gs, 512);
     stbi_write_png("data/raw.png", 512, 512, 1, image, 512);
 
+}
+
+void sendImage(volatile int *pio_cmd){
+    //uint8_t *image = malloc(512*512);
+    uint8_t *input_img = "data/raw.png";
+    int alt, larg, chan; 
+    uint8_t *image_p = stbi_load(input_img, &alt, &larg, &chan, 1);
+
+    imageToFPGA(pio_cmd, image_p);
+    
 }
 
 int getInstruction(int num){
@@ -173,6 +205,7 @@ int main(void){
         printf("6 -\tSharpen\n");
         printf("7 -\tConvert to Grayscale\n");
         printf("8 -\tRead Image\n");
+        printf("9 -\tWrite Image\n");
         printf("===Any other integer to close program===\n");
         scanf("%d", &input);
         switch (input){
@@ -189,6 +222,9 @@ int main(void){
                 break;
             case 8:
                 generateImage(pio_cmd);
+                break;
+            case 9: 
+                sendImage(pio_cmd);
                 break;
             default:
                 program = 0;
