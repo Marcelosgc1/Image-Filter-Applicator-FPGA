@@ -167,8 +167,8 @@ https://fpgasoftware.intel.com/eula.
 	(port
 		(pt 0 72)
 		(output)
-		(text "act_ins_export[1..0]" (rect 0 0 77 12)(font "Arial" (font_size 8)))
-		(text "act_ins_export[1..0]" (rect 4 61 124 72)(font "Arial" (font_size 8)))
+		(text "act_ins_export[31..0]" (rect 0 0 82 12)(font "Arial" (font_size 8)))
+		(text "act_ins_export[31..0]" (rect 4 61 130 72)(font "Arial" (font_size 8)))
 		(line (pt 0 72)(pt 272 72)(line_width 3))
 	)
 	(port

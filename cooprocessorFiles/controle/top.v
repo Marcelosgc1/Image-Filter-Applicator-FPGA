@@ -1,6 +1,6 @@
 module top(
 	input [31:0] instruction,
-	input [1:0] activate_signal,
+	input [31:0] activate_signal,
 	input clk,
 	input [6:0] key,
 	input [9:0] sw,
@@ -44,15 +44,14 @@ module top(
 					CONV_TRSP = 4'b0110,	//conv. 2 matriz transposta
 					CONV_ROB = 4'b0111,	//conv. 2 matriz 45 graus
 					B2G = 4'b1000,
+					WRI_IMAGE = 4'b1101,
 					PHOTO_CONV = 4'b1110,
 					READ_IMAGE = 4'b1111;
 					
 	assign data_read = hps_read_image ? ram_data_out : coprocessor_data;
 	 
-	wire done_conv, activate_instruction, activate_ipu;
+	wire done_conv;
 	
-	assign activate_instruction = activate_signal[0];
-	assign activate_ipu = activate_signal[0];
 	
 	wire [199:0] operandA, operandB; 
 	wire [31:0] matrix_C, sent_instruction, fetched_instruction;
@@ -64,7 +63,7 @@ module top(
 	convolution_coprocessor new_coprocessor(
 		clk,
 		sent_instruction,
-		(activate_instruction | ipu_request), 
+		ipu_request, 
 		coprocessor_data,
 		wait_signal,
 		ipu_control,
@@ -133,7 +132,7 @@ module top(
 	wire cam_valid_pixel, cam_clock, cam_we, conv_we, memory_clk;
 	
 	assign address_buf = {v_count_buf, h_count_buf[8:2]};
-	assign WRITE_ENABLE = cam_we | conv_we;
+	assign WRITE_ENABLE = cam_we | conv_we | hps_write_image;
 	assign addr = 	buf_control ? address_buf : 
 						hps_read_image ? hps_image_address : 
 						cam_we | cam_valid_pixel ? cam_address : 
@@ -141,13 +140,14 @@ module top(
 						addr_vga;
 
 	assign memory_clk = cam_we | cam_valid_pixel ? cam_clock : clk;
-	assign data_in = cam_we | cam_valid_pixel ? cam_data : conv_data;
+	assign data_in = hps_write_image ? activate_signal[31:0] : cam_we | cam_valid_pixel ? cam_data : conv_data;
 	
 	assign pixel_color = (opcode==CONV) ? (matrix_C[7:0]) : (matrix_C[23:16]);
 	
 	//LEMBRAR DE TESTAR start_buf ? .. : ..; depois
 	
-	assign hps_read_image = instruction[3:0]==READ_IMAGE;
+	assign hps_write_image = instruction[3:0]==WRI_IMAGE;
+	assign hps_read_image = instruction[3:0]==READ_IMAGE | hps_write_image;
 	assign hps_image_address = instruction[19:4];
 	
 
@@ -486,20 +486,5 @@ module top(
 		size,
 		buf_matrix, t0,t1,u0,u1,v0,v1
 	);
-	reg [31:0]v;
-	wire [31:0]t0,t1,u0,u1,v0,v1;
-	always @(*)begin
-		case(sw[9:7])
-			0: v = t1;
-			1: v = t0;
-			2: v = u1;
-			3: v = u0;
-			4: v = v1;
-			5: v = v0;
-			default v = t0;
-		endcase
-	end
-	SEG7_LUT_8(h0,h1,h2,h3,h4,h5,v);
-	
 
 endmodule

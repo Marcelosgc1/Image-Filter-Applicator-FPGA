@@ -1,6 +1,6 @@
 	component soc_system is
 		port (
-			act_ins_export                                  : out   std_logic_vector(1 downto 0);                     -- export
+			act_ins_export                                  : out   std_logic_vector(31 downto 0);                    -- export
 			clk_clk                                         : in    std_logic                     := 'X';             -- clk
 			data_export                                     : in    std_logic_vector(31 downto 0) := (others => 'X'); -- export
 			hps_0_f2h_cold_reset_req_reset_n                : in    std_logic                     := 'X';             -- reset_n

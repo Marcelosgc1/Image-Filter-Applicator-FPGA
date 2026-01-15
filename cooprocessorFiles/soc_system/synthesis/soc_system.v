@@ -4,7 +4,7 @@
 
 `timescale 1 ps / 1 ps
 module soc_system (
-		output wire [1:0]  act_ins_export,                                  //                                   act_ins.export
+		output wire [31:0] act_ins_export,                                  //                                   act_ins.export
 		input  wire        clk_clk,                                         //                                       clk.clk
 		input  wire [31:0] data_export,                                     //                                      data.export
 		input  wire        hps_0_f2h_cold_reset_req_reset_n,                //                  hps_0_f2h_cold_reset_req.reset_n
@@ -553,7 +553,7 @@ module soc_system (
 		.in_port  (data_export)                             // external_connection.export
 	);
 
-	soc_system_pio_INSTR pio_instr (
+	soc_system_pio_ACTIVATE pio_instr (
 		.clk        (clk_clk),                                   //                 clk.clk
 		.reset_n    (~rst_controller_reset_out_reset),           //               reset.reset_n
 		.address    (mm_interconnect_0_pio_instr_s1_address),    //                  s1.address

@@ -91,7 +91,7 @@ module soc_system (
 	video_vga_controller_0_external_interface_B,
 	wait_s_export);	
 
-	output	[1:0]	act_ins_export;
+	output	[31:0]	act_ins_export;
 	input		clk_clk;
 	input	[31:0]	data_export;
 	input		hps_0_f2h_cold_reset_req_reset_n;

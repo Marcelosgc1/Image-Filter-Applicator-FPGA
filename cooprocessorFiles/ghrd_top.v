@@ -331,7 +331,7 @@ soc_system u0 (
   
 wire [31:0] ins;
 wire [31:0] dat;
-wire [1:0] ai;
+wire [31:0] ai;
 wire wait_s;  
 
 //assign LEDR = {ai,wait_s};
