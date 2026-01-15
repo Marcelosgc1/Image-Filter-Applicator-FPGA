@@ -62,7 +62,7 @@ module top(
 	assign sent_instruction = ipu_request ? ipu_inst : instruction;
 	
 	convolution_coprocessor new_coprocessor(
-		clk,
+		cam_clock,
 		sent_instruction,
 		(activate_instruction | ipu_request), 
 		coprocessor_data,
@@ -140,7 +140,7 @@ module top(
 						result_writing ? addr_conv : 
 						addr_vga;
 
-	assign memory_clk = cam_we | cam_valid_pixel ? cam_clock : clk;
+	assign memory_clk = cam_clock;
 	assign data_in = cam_we | cam_valid_pixel ? cam_data : conv_data;
 	
 	assign pixel_color = (opcode==CONV) ? (matrix_C[7:0]) : (matrix_C[23:16]);
@@ -410,7 +410,7 @@ module top(
 	
 	
 	
-	always @ (posedge clk) begin
+	always @ (posedge cam_clock) begin
 		ipu_state <= next_ipu;
 		instruction_code <= next_instruction_code;
 		start_process <= next_start;
@@ -439,7 +439,7 @@ module top(
 	
 
 	write_result coprocessor_result_writer(
-		clk,
+		cam_clock,
 		ipu_inst[21:4],
 		done_conv,
 		ram_data_out,
@@ -454,7 +454,7 @@ module top(
 	
 	
 	vga_control vga_control_instance(
-		clk,
+		cam_clock,
 		ram_data_out,
 		addr_vga,
 		hsync, 
@@ -479,7 +479,7 @@ module top(
 	
 	
 	line_buffers temporary_memory(
-		clk,
+		cam_clock,
 		ram_data_out, 
 		h_count_buf,
 		save_buf,
