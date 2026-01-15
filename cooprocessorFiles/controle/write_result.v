@@ -22,25 +22,30 @@ assign phy_addr = instruction_addr[17:2];
 
 always @(*) begin
 	true_done = !delay & convolution_done;
-	case (offset)
-		0: begin
-			data_in = {24'h0, new_data};
-			byte_en_signal = 4'b0001;
-		end
-		1: begin
-			data_in = {16'h0, new_data, 8'h0};
-			byte_en_signal = 4'b0010;
-		end
-		2: begin
-			data_in = {8'h0, new_data, 16'h0};
-			byte_en_signal = 4'b0100;
-		end
-		3: begin
-			data_in = {new_data, 24'h0};
-			byte_en_signal = 4'b1000;
-		end
-	endcase
-	
+	if (true_done || (|state)) begin
+		case (offset)
+			0: begin
+				data_in = {24'h0, new_data};
+				byte_en_signal = 4'b0001;
+			end
+			1: begin
+				data_in = {16'h0, new_data, 8'h0};
+				byte_en_signal = 4'b0010;
+			end
+			2: begin
+				data_in = {8'h0, new_data, 16'h0};
+				byte_en_signal = 4'b0100;
+			end
+			3: begin
+				data_in = {new_data, 24'h0};
+				byte_en_signal = 4'b1000;
+			end
+		endcase
+	end
+	else begin
+		data_in = 32'h0;
+		byte_en_signal = 4'b1111;
+	end
 	
 	case (state) 
 		0: begin
